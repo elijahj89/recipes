@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Elijah's Kitchen</title>
+  <title>Snug Family Kitchen</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍲</text></svg>" />
   <style>
     :root {
@@ -221,7 +221,7 @@
 </head>
 <body>
   <header>
-    <h1>🍲 Elijah's Kitchen</h1>
+    <h1>🍲 Snug Family Kitchen</h1>
     <div class="sub">Our collection, all in one place.</div>
   </header>
 
@@ -509,7 +509,7 @@
     }
 
     function showRecipe(r) {
-      document.title = r.title + " · Elijah's Kitchen";
+      document.title = r.title + " · Snug Family Kitchen";
       renderRecipe(r);
       recipeScreen.classList.add("open");
       recipeScreen.setAttribute("aria-hidden", "false");
@@ -519,7 +519,7 @@
     }
 
     function showHome() {
-      document.title = "Elijah's Kitchen";
+      document.title = "Snug Family Kitchen";
       recipeScreen.classList.remove("open");
       recipeScreen.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";

@@ -1,4 +1,4 @@
-# 🍲 Family Recipes
+# 🍲 Snug Family Kitchen
 
 A simple, free website for storing our family recipes and sharing them with a link.
 
