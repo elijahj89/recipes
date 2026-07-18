@@ -99,5 +99,53 @@
       "Serve warm and enjoy."
     ],
     "notes": "The extra egg yolk adds richness. Rest the batter a few minutes before cooking for fluffier pancakes."
+  },
+  {
+    "id": "chicken-parmesan",
+    "title": "Chicken Parmesan",
+    "category": "Dinner",
+    "servings": "4–5",
+    "time": "1 hr 30 min",
+    "author": "Family",
+    "tags": ["chicken", "italian"],
+    "description": "Crispy panko-breaded chicken thighs over a homemade San Marzano marinara, topped with mozzarella and baked until bubbly.",
+    "ingredients": [
+      "# Tomato Sauce (Marinara)",
+      "2 cans (28 oz each) whole peeled San Marzano tomatoes",
+      "1/3 cup olive oil",
+      "14 cloves garlic, minced",
+      "1 medium shallot, minced",
+      "1 can water (use a tomato can to measure)",
+      "1 tbsp red pepper flakes",
+      "1 tbsp dried oregano",
+      "Salt, to taste",
+      "A few sprigs fresh basil",
+      "1 ladle reserved pasta water, for finishing (optional)",
+      "# Chicken",
+      "Boneless, skinless chicken thighs (1 per serving)",
+      "2–3 eggs (for 4–5 thighs)",
+      "About 1 cup all-purpose flour",
+      "2–3 cups Japanese panko breadcrumbs",
+      "Parmigiano-Reggiano, finely grated (generous amount)",
+      "Low-moisture mozzarella, grated (for topping)",
+      "Salt and black pepper",
+      "Paprika, garlic powder, onion powder, and a pinch of oregano",
+      "Oil for frying (vegetable, canola, or avocado)",
+      "Plastic wrap or wax paper (for pounding)"
+    ],
+    "steps": [
+      "# Tomato Sauce",
+      "Prep: Crush the tomatoes by hand in a bowl. Mince the garlic and shallot, and prepare the seasonings and basil.",
+      "Sauté aromatics: Heat the olive oil over medium-low. Sauté the garlic until fragrant (about 1 minute), then add the shallot and cook until soft, 3–5 minutes.",
+      "Simmer: Add the crushed tomatoes and 1 can of water. Stir in the salt, red pepper flakes, and oregano, then add the basil. Simmer 45 minutes to 1 hour, partially covered.",
+      "Finish: Stir in a ladle of pasta water before serving (optional) and remove the basil stems.",
+      "# Chicken",
+      "Prepare the chicken: Pound the chicken thighs to under 1/2 inch thick.",
+      "Set up breading stations: one bowl of flour, one of beaten egg, and one of breadcrumbs (panko + finely grated Parmesan + seasonings).",
+      "Bread the chicken: Pat dry, then dredge in flour, then egg, then the breadcrumb mix. Press firmly.",
+      "Fry: Fry in 1/2 inch of oil over low-medium heat, 3–4 minutes per side. Drain on paper towels or a rack.",
+      "Assemble and finish: Preheat the oven to 450–500°F. Top each piece with sauce and mozzarella. Bake 5–7 minutes until bubbly and browned. Serve immediately."
+    ],
+    "notes": "The marinara makes a generous batch — great tossed with pasta and the reserved pasta water. Season the breadcrumb mix well with the paprika, garlic powder, onion powder, and oregano."
   }
 ]
