@@ -30,5 +30,32 @@
       "Pull the chicken when it hits 160°F internal — it will carry over to 165°F while resting. Rest for 5 minutes before slicing. This keeps the juices locked in."
     ],
     "notes": "Thighs vs breasts: Thighs are more forgiving on a flat-top — more fat means more moisture and better crust. Breasts work great too but watch your temp closely. Don't skip the pat dry: moisture on the surface = steam, not sear. Paper towels make the difference between golden and grey. Honey watch: the honey in the marinade caramelizes fast — if you see it darkening too quickly, drop to medium heat. Batch cooking: this marinade scales easily, great for meal prepping. Slice leftovers for salads, wraps, or rice bowls."
+  },
+  {
+    "id": "test-pancakes",
+    "title": "Test Pancakes",
+    "category": "Breakfast",
+    "servings": "4 (about 12 pancakes)",
+    "time": "25 min",
+    "author": "Family",
+    "tags": ["quick", "vegetarian"],
+    "description": "A test recipe — classic light and fluffy pancakes from pantry staples.",
+    "ingredients": [
+      "1 1/2 cups all-purpose flour",
+      "3 1/2 tsp baking powder",
+      "1 tbsp sugar",
+      "1/4 tsp salt",
+      "1 1/4 cups milk",
+      "1 egg",
+      "3 tbsp butter, melted"
+    ],
+    "steps": [
+      "Whisk together flour, baking powder, sugar, and salt in a large bowl.",
+      "Make a well in the center and pour in the milk, egg, and melted butter. Mix until just combined — a few lumps are fine.",
+      "Heat a lightly oiled griddle or pan over medium-high heat.",
+      "Pour about 1/4 cup batter per pancake. Cook until bubbles form on top, then flip and cook until golden.",
+      "Serve warm with syrup, butter, or fresh fruit."
+    ],
+    "notes": "Don't overmix the batter — a few lumps are the secret to fluffy pancakes."
   }
 ]
