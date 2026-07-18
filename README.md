@@ -32,14 +32,19 @@ Just ask Claude Code: *"Add this recipe: …"* and it will append a new entry to
 
 ## Update prompts (stale-content fix for phones)
 
-The app checks `version.json` on a timer and whenever it's reopened. When the
-value there differs from what a device is running, a **"New version available —
-Reload"** banner appears. This matters most for the app added to a phone's home
-screen, where the browser otherwise holds onto stale content.
+The app detects new deploys **automatically** — there is nothing to bump by hand.
+On a timer and whenever the app is reopened, it computes a signature of the
+deployed files (`index.html` + `recipes.json`) and compares it to what the device
+is running. If anything changed, an **"Update available — Reload"** banner slides
+up (Reload is the only option, so everyone moves to the latest version). This
+matters most for the app added to a phone's home screen, where the browser
+otherwise holds onto stale content.
 
-**Whenever the site changes (new recipe, code change), bump the `"version"`
-string in `version.json`** so devices get prompted to reload. (Claude Code does
-this automatically on each deploy.)
+Because detection is content-based, simply pushing any change (a new recipe or a
+code edit) is enough — no version file to maintain.
+
+> `version.json` is legacy from the old manual scheme and is no longer used by the
+> app; it can be removed once every device has loaded a build from this point on.
 
 ## Turning on the website (one-time setup)
 

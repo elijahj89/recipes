@@ -737,23 +737,47 @@
     const updateToast = document.getElementById("updateToast");
     const reloadBtn = document.getElementById("reloadBtn");
     const reloadCover = document.getElementById("reloadCover");
-    let runningVersion = null, pendingVersion = null, reloading = false;
+    let runningSig = null, pendingToken = "1", reloading = false;
 
-    async function fetchVersion() {
+    // Small string hash -> short URL-safe token (djb2).
+    function hashStr(s) {
+      let h = 5381;
+      for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+      return h.toString(36);
+    }
+
+    // Signature of one deployed file. Prefers a cheap HEAD (ETag/Last-Modified);
+    // if the server exposes neither, falls back to hashing the body. This means
+    // ANY change to the deployed files is detected automatically — there is no
+    // version number to bump by hand.
+    async function sigFor(path) {
+      const url = path + "?_=" + Date.now();
       try {
-        const res = await fetch("version.json?_=" + Date.now(), { cache: "no-store" });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data && data.version ? String(data.version) : null;
+        const h = await fetch(url, { method: "HEAD", cache: "no-store" });
+        if (h.ok) {
+          const tag = h.headers.get("etag") || h.headers.get("last-modified");
+          if (tag) return tag;
+        }
+      } catch (e) {}
+      try {
+        const g = await fetch(url, { cache: "no-store" });
+        if (!g.ok) return null;
+        return "b" + hashStr(await g.text());
       } catch (e) { return null; }
     }
 
+    async function fetchSignature() {
+      const [a, b] = await Promise.all([sigFor("index.html"), sigFor("recipes.json")]);
+      if (!a || !b) return null;                 // couldn't read: don't prompt
+      return a + "|" + b;
+    }
+
     async function checkForUpdate() {
-      const latest = await fetchVersion();
+      const latest = await fetchSignature();
       if (!latest) return;                       // offline / unreachable: try again later
-      if (!runningVersion) { runningVersion = latest; return; }  // adopt baseline
-      if (latest !== runningVersion) {
-        pendingVersion = latest;
+      if (!runningSig) { runningSig = latest; return; }  // adopt baseline
+      if (latest !== runningSig) {
+        pendingToken = hashStr(latest);
         updateToast.classList.add("show");
       }
     }
@@ -769,9 +793,9 @@
       reloadCover.setAttribute("aria-hidden", "false");
 
       const u = new URL(location.href);
-      // Key the cache-bust to the VERSION (not a timestamp) so the CDN can cache
-      // it — this reloads fresh content but stays fast instead of a cold fetch.
-      u.searchParams.set("v", pendingVersion || runningVersion || "1");
+      // Key the cache-bust to the new content signature (stable → CDN-cacheable),
+      // so the reload is fresh but fast rather than a cold origin fetch each time.
+      u.searchParams.set("v", pendingToken);
       const target = u.toString();
       // Two frames so the cover/spinner paint before navigation blocks the thread.
       requestAnimationFrame(() => requestAnimationFrame(() => location.replace(target)));
@@ -789,7 +813,7 @@
     })();
 
     (async function initUpdateCheck() {
-      runningVersion = await fetchVersion();
+      runningSig = await fetchSignature();
       setInterval(checkForUpdate, 20000);
       // Fire an immediate check whenever the app resumes — the moment a
       // home-screen app is reopened is when a pending update should surface.
