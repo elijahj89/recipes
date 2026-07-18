@@ -30,6 +30,17 @@ Just ask Claude Code: *"Add this recipe: …"* and it will append a new entry to
 }
 ```
 
+## Update prompts (stale-content fix for phones)
+
+The app checks `version.json` on a timer and whenever it's reopened. When the
+value there differs from what a device is running, a **"New version available —
+Reload"** banner appears. This matters most for the app added to a phone's home
+screen, where the browser otherwise holds onto stale content.
+
+**Whenever the site changes (new recipe, code change), bump the `"version"`
+string in `version.json`** so devices get prompted to reload. (Claude Code does
+this automatically on each deploy.)
+
 ## Turning on the website (one-time setup)
 
 1. Go to this repo on GitHub → **Settings** → **Pages**.
