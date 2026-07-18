@@ -6,6 +6,7 @@
     "servings": "4 (about 12 pancakes)",
     "time": "25 min",
     "author": "Family",
+    "tags": ["quick", "vegetarian"],
     "description": "Light, fluffy pancakes that come together with pantry staples. A reliable weekend favorite.",
     "ingredients": [
       "1 1/2 cups all-purpose flour",
@@ -24,5 +25,121 @@
       "Serve warm with syrup, butter, or fresh fruit."
     ],
     "notes": "Don't overmix the batter — that's the secret to fluffy pancakes."
+  },
+  {
+    "id": "lemon-garlic-roast-chicken",
+    "title": "Lemon Garlic Roast Chicken",
+    "category": "Dinner",
+    "servings": "4",
+    "time": "1 hr 20 min",
+    "author": "Family",
+    "tags": ["chicken", "roast"],
+    "description": "A whole roast chicken with bright lemon and garlic, crispy skin, and juicy meat. Sunday-dinner classic.",
+    "ingredients": [
+      "1 whole chicken (about 4 lb)",
+      "1 lemon, halved",
+      "6 cloves garlic, smashed",
+      "3 tbsp butter, softened",
+      "2 tbsp olive oil",
+      "1 tsp salt",
+      "1/2 tsp black pepper",
+      "A few sprigs fresh thyme or rosemary"
+    ],
+    "steps": [
+      "Preheat oven to 425°F (220°C). Pat the chicken dry all over.",
+      "Rub the softened butter and olive oil over the skin. Season generously with salt and pepper.",
+      "Stuff the cavity with the lemon halves, smashed garlic, and herbs.",
+      "Place breast-side up in a roasting pan and roast for about 1 hour 15 minutes, until the juices run clear and a thermometer reads 165°F (74°C) in the thigh.",
+      "Let rest 10 minutes before carving."
+    ],
+    "notes": "Save the bones to make stock for the chicken noodle soup!"
+  },
+  {
+    "id": "chicken-noodle-soup",
+    "title": "Chicken Noodle Soup",
+    "category": "Dinner",
+    "servings": "6",
+    "time": "45 min",
+    "author": "Family",
+    "tags": ["chicken", "comfort", "one-pot"],
+    "description": "Cozy, brothy chicken noodle soup that cures whatever ails you.",
+    "ingredients": [
+      "1 tbsp olive oil",
+      "1 onion, diced",
+      "3 carrots, sliced",
+      "3 stalks celery, sliced",
+      "2 cloves garlic, minced",
+      "8 cups chicken broth",
+      "2 cups cooked chicken, shredded",
+      "2 cups egg noodles",
+      "1 tsp salt, plus more to taste",
+      "Fresh parsley, chopped"
+    ],
+    "steps": [
+      "Heat olive oil in a large pot over medium heat. Add onion, carrots, and celery and cook until softened, about 6 minutes.",
+      "Stir in the garlic and cook 1 minute until fragrant.",
+      "Pour in the chicken broth and bring to a boil.",
+      "Add the egg noodles and simmer until tender, about 8 minutes.",
+      "Stir in the shredded chicken, season with salt, and warm through. Finish with fresh parsley."
+    ],
+    "notes": "Cook the noodles separately if you're saving leftovers — they soak up broth as they sit."
+  },
+  {
+    "id": "weeknight-beef-chili",
+    "title": "Weeknight Beef Chili",
+    "category": "Dinner",
+    "servings": "6",
+    "time": "40 min",
+    "author": "Family",
+    "tags": ["beef", "one-pot"],
+    "description": "A hearty, mildly spiced beef chili that comes together fast on a busy night.",
+    "ingredients": [
+      "1 lb ground beef",
+      "1 onion, diced",
+      "2 cloves garlic, minced",
+      "2 tbsp chili powder",
+      "1 tsp cumin",
+      "1 can (28 oz) crushed tomatoes",
+      "1 can (15 oz) kidney beans, drained",
+      "1 cup beef broth",
+      "Salt and pepper to taste"
+    ],
+    "steps": [
+      "Brown the ground beef in a large pot over medium-high heat, breaking it up as it cooks. Drain excess fat.",
+      "Add the onion and garlic and cook until softened, about 5 minutes.",
+      "Stir in the chili powder and cumin and cook 1 minute.",
+      "Add the crushed tomatoes, beans, and broth. Bring to a simmer.",
+      "Simmer uncovered for 25 minutes, stirring occasionally. Season with salt and pepper."
+    ],
+    "notes": "Top with cheese, sour cream, or diced onion. Even better the next day."
+  },
+  {
+    "id": "garden-veggie-stir-fry",
+    "title": "Garden Veggie Stir-Fry",
+    "category": "Dinner",
+    "servings": "4",
+    "time": "20 min",
+    "author": "Family",
+    "tags": ["vegetarian", "quick"],
+    "description": "A quick, colorful vegetable stir-fry with a savory garlic-soy sauce. Serve over rice.",
+    "ingredients": [
+      "2 tbsp vegetable oil",
+      "2 cups broccoli florets",
+      "1 red bell pepper, sliced",
+      "1 cup snap peas",
+      "2 carrots, thinly sliced",
+      "2 cloves garlic, minced",
+      "3 tbsp soy sauce",
+      "1 tbsp honey",
+      "1 tsp sesame oil"
+    ],
+    "steps": [
+      "Whisk together the soy sauce, honey, and sesame oil; set aside.",
+      "Heat the vegetable oil in a large skillet or wok over high heat.",
+      "Add the carrots and broccoli and stir-fry 3 minutes.",
+      "Add the bell pepper, snap peas, and garlic and stir-fry 3 more minutes until crisp-tender.",
+      "Pour in the sauce and toss to coat for 1 minute. Serve over rice."
+    ],
+    "notes": "Add tofu or leftover chicken to make it a heartier meal."
   }
 ]

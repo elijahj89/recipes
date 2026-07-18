@@ -37,26 +37,22 @@
     }
     header {
       text-align: center;
-      padding: 3rem 1.5rem 1.5rem;
+      padding: 3rem 1.5rem 1.25rem;
       border-bottom: 1px solid var(--border);
     }
-    header h1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
+    header h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; }
     header .sub { color: var(--muted); margin-top: 0.4rem; }
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-      align-items: center;
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 1.5rem; }
+
+    .searchrow { display: flex; gap: 0.75rem; margin-bottom: 1.1rem; align-items: center; }
+    .search-wrap { position: relative; flex: 1; }
+    .search-wrap .icon {
+      position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
+      color: var(--muted); pointer-events: none;
     }
     #search {
-      flex: 1 1 240px;
-      padding: 0.7rem 1rem;
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
       font-size: 1rem;
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -64,104 +60,110 @@
       color: var(--text);
     }
     #search:focus { outline: 2px solid var(--accent); outline-offset: 0; }
-    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .view-toggle { display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .view-toggle button {
+      background: var(--card); border: none; padding: 0.6rem 0.75rem;
+      cursor: pointer; color: var(--muted); display: flex; align-items: center;
+    }
+    .view-toggle button.active { background: var(--accent); color: #fff; }
+    .view-toggle button + button { border-left: 1px solid var(--border); }
+
+    .filters { margin-bottom: 0.5rem; }
+    .filter-group { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; margin-bottom: 0.6rem; }
+    .filter-label {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted); font-weight: 700; margin-right: 0.3rem; min-width: 74px;
+    }
     .chip {
-      padding: 0.4rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.15s;
+      padding: 0.38rem 0.85rem; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--card); color: var(--muted);
+      cursor: pointer; font-size: 0.88rem; transition: all 0.15s; white-space: nowrap;
     }
     .chip:hover { border-color: var(--accent); color: var(--accent); }
     .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.2rem;
+    .chip .x { margin-left: 0.3rem; opacity: 0.85; }
+
+    .resultbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0.9rem 0 1.1rem; color: var(--muted); font-size: 0.9rem;
     }
+    .clear-btn {
+      background: none; border: none; color: var(--accent); cursor: pointer;
+      font-size: 0.9rem; font-weight: 600; padding: 0;
+    }
+    .clear-btn[hidden] { display: none; }
+
+    /* Grid view */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+    .grid .card { padding: 1.3rem; }
+    .grid .card h3 { font-size: 1.25rem; margin: 0.7rem 0 0.4rem; }
+    .grid .card .desc { margin-top: 0.6rem; color: var(--muted); font-size: 0.95rem; }
+
+    /* List view */
+    .list { display: flex; flex-direction: column; gap: 0.7rem; }
+    .list .card { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.2rem; }
+    .list .card .body { flex: 1; min-width: 0; }
+    .list .card h3 { font-size: 1.1rem; margin: 0.15rem 0; }
+    .list .card .desc { display: none; }
+    .list .card .taglist { justify-content: flex-end; }
+
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.3rem;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      transition: transform 0.15s, box-shadow 0.15s;
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      cursor: pointer; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s;
     }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
-    .card .cat {
-      display: inline-block;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-      background: var(--accent-soft);
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      font-weight: 600;
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+    .cat {
+      display: inline-block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--accent); background: var(--accent-soft);
+      padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 600;
     }
-    .card h3 { font-size: 1.25rem; margin: 0.7rem 0 0.4rem; }
     .card .meta { color: var(--muted); font-size: 0.88rem; }
-    .card .desc { margin-top: 0.6rem; color: var(--muted); font-size: 0.95rem; }
+    .taglist { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem; }
+    .tag {
+      font-size: 0.75rem; color: var(--muted); background: var(--bg);
+      border: 1px solid var(--border); padding: 0.12rem 0.5rem; border-radius: 999px;
+    }
     .empty { text-align: center; color: var(--muted); padding: 4rem 1rem; }
 
     /* Detail overlay */
     .overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 2rem 1rem;
-      overflow-y: auto;
-      z-index: 10;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: none; align-items: flex-start; justify-content: center;
+      padding: 2rem 1rem; overflow-y: auto; z-index: 10;
     }
     .overlay.open { display: flex; }
     .detail {
-      background: var(--bg);
-      max-width: 720px;
-      width: 100%;
-      border-radius: 16px;
-      padding: 2.5rem;
-      box-shadow: var(--shadow);
-      position: relative;
+      background: var(--bg); max-width: 720px; width: 100%; border-radius: 16px;
+      padding: 2.5rem; box-shadow: var(--shadow); position: relative;
     }
     .close {
-      position: absolute; top: 1rem; right: 1.2rem;
-      background: none; border: none; font-size: 1.8rem;
-      color: var(--muted); cursor: pointer; line-height: 1;
-    }
-    .detail .cat {
-      display: inline-block;
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
-      color: var(--accent); background: var(--accent-soft);
-      padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 600;
+      position: absolute; top: 1rem; right: 1.2rem; background: none; border: none;
+      font-size: 1.8rem; color: var(--muted); cursor: pointer; line-height: 1;
     }
     .detail h2 { font-size: 2rem; margin: 0.8rem 0 0.5rem; letter-spacing: -0.02em; }
     .detail .meta-row {
-      display: flex; flex-wrap: wrap; gap: 1.2rem;
-      color: var(--muted); font-size: 0.92rem; margin-bottom: 1.2rem;
+      display: flex; flex-wrap: wrap; gap: 1.2rem; color: var(--muted);
+      font-size: 0.92rem; margin-bottom: 1.2rem;
     }
-    .detail .description { font-size: 1.05rem; margin-bottom: 1.8rem; }
+    .detail .description { font-size: 1.05rem; margin-bottom: 1.2rem; }
     .detail h4 {
-      font-size: 1.1rem; margin: 1.8rem 0 0.8rem;
-      padding-bottom: 0.4rem; border-bottom: 2px solid var(--accent-soft);
+      font-size: 1.1rem; margin: 1.8rem 0 0.8rem; padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--accent-soft);
     }
     .detail ul, .detail ol { padding-left: 1.4rem; }
     .detail li { margin-bottom: 0.5rem; }
     .detail .notes {
-      margin-top: 1.8rem; padding: 1rem 1.2rem;
-      background: var(--accent-soft); border-radius: 10px;
-      font-size: 0.95rem;
+      margin-top: 1.8rem; padding: 1rem 1.2rem; background: var(--accent-soft);
+      border-radius: 10px; font-size: 0.95rem;
     }
     footer { text-align: center; color: var(--muted); padding: 2.5rem 1rem; font-size: 0.88rem; }
     @media print {
-      header, .controls, footer, .close { display: none; }
+      header, .searchrow, .filters, .resultbar, footer, .close { display: none; }
       .overlay { position: static; background: none; display: block; padding: 0; }
       .detail { box-shadow: none; }
+    }
+    @media (max-width: 560px) {
+      .filter-label { min-width: 100%; margin-bottom: 0.1rem; }
     }
   </style>
 </head>
@@ -172,12 +174,29 @@
   </header>
 
   <div class="wrap">
-    <div class="controls">
-      <input id="search" type="search" placeholder="Search recipes or ingredients…" />
-      <div class="chips" id="chips"></div>
+    <div class="searchrow">
+      <div class="search-wrap">
+        <span class="icon">🔍</span>
+        <input id="search" type="search" placeholder="Search recipes or ingredients (typos are fine)…" autocomplete="off" />
+      </div>
+      <div class="view-toggle" id="viewToggle">
+        <button data-view="grid" title="Grid view" aria-label="Grid view">▦</button>
+        <button data-view="list" title="List view" aria-label="List view">☰</button>
+      </div>
     </div>
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="empty" style="display:none">No recipes match your search.</div>
+
+    <div class="filters">
+      <div class="filter-group" id="catGroup"><span class="filter-label">Category</span></div>
+      <div class="filter-group" id="tagGroup"><span class="filter-label">Ingredient</span></div>
+    </div>
+
+    <div class="resultbar">
+      <span id="count"></span>
+      <button class="clear-btn" id="clearBtn" hidden>Clear all filters</button>
+    </div>
+
+    <div id="results"></div>
+    <div class="empty" id="empty" style="display:none">No recipes match. Try clearing a filter or simplifying your search.</div>
   </div>
 
   <footer>Made with love. To add a recipe, ask Claude Code to update <code>recipes.json</code>.</footer>
@@ -189,59 +208,164 @@
   <script>
     let recipes = [];
     let activeCat = "All";
+    let activeTags = new Set();
     let query = "";
+    let view = localStorage.getItem("recipeView") || "grid";
 
-    const grid = document.getElementById("grid");
+    const results = document.getElementById("results");
     const empty = document.getElementById("empty");
-    const chipsEl = document.getElementById("chips");
+    const catGroup = document.getElementById("catGroup");
+    const tagGroup = document.getElementById("tagGroup");
     const overlay = document.getElementById("overlay");
     const detail = document.getElementById("detail");
     const searchEl = document.getElementById("search");
+    const countEl = document.getElementById("count");
+    const clearBtn = document.getElementById("clearBtn");
+    const viewToggle = document.getElementById("viewToggle");
+
+    // Auto-detect ingredient tags from a recipe's ingredients + explicit tags.
+    const PROTEIN_RULES = [
+      ["chicken", /\bchicken\b/],
+      ["beef", /\b(beef|steak|ground beef)\b/],
+      ["pork", /\b(pork|bacon|ham|sausage|prosciutto)\b/],
+      ["seafood", /\b(fish|salmon|tuna|shrimp|prawn|cod|crab|scallop)\b/],
+      ["turkey", /\bturkey\b/]
+    ];
+    function deriveTags(r) {
+      const set = new Set((r.tags || []).map(t => t.toLowerCase()));
+      const hay = (r.ingredients || []).join(" ").toLowerCase() + " " + (r.title || "").toLowerCase();
+      for (const [tag, re] of PROTEIN_RULES) if (re.test(hay)) set.add(tag);
+      return [...set];
+    }
 
     fetch("recipes.json")
       .then(r => r.json())
       .then(data => {
-        recipes = data;
-        buildChips();
+        recipes = data.map(r => ({ ...r, _tags: deriveTags(r) }));
+        buildFilters();
+        setView(view);
         render();
       })
-      .catch(() => {
-        grid.innerHTML = '<div class="empty">Could not load recipes.json.</div>';
+      .catch(() => { results.innerHTML = '<div class="empty">Could not load recipes.json.</div>'; });
+
+    function buildFilters() {
+      const cats = ["All", ...new Set(recipes.map(r => r.category).filter(Boolean))];
+      catGroup.querySelectorAll(".chip").forEach(c => c.remove());
+      cats.forEach(c => {
+        const b = document.createElement("button");
+        b.className = "chip" + (c === activeCat ? " active" : "");
+        b.textContent = c;
+        b.onclick = () => { activeCat = c; syncChips(); render(); };
+        catGroup.appendChild(b);
       });
 
-    function buildChips() {
-      const cats = ["All", ...new Set(recipes.map(r => r.category).filter(Boolean))];
-      chipsEl.innerHTML = cats.map(c =>
-        `<button class="chip${c === activeCat ? " active" : ""}" data-cat="${esc(c)}">${esc(c)}</button>`
-      ).join("");
-      chipsEl.querySelectorAll(".chip").forEach(btn => {
-        btn.onclick = () => {
-          activeCat = btn.dataset.cat;
-          buildChips();
-          render();
+      const allTags = [...new Set(recipes.flatMap(r => r._tags))].sort();
+      tagGroup.querySelectorAll(".chip").forEach(c => c.remove());
+      allTags.forEach(t => {
+        const b = document.createElement("button");
+        b.className = "chip" + (activeTags.has(t) ? " active" : "");
+        b.dataset.tag = t;
+        b.textContent = cap(t);
+        b.onclick = () => {
+          if (activeTags.has(t)) activeTags.delete(t); else activeTags.add(t);
+          syncChips(); render();
         };
+        tagGroup.appendChild(b);
       });
     }
 
+    function syncChips() {
+      catGroup.querySelectorAll(".chip").forEach(b => b.classList.toggle("active", b.textContent === activeCat));
+      tagGroup.querySelectorAll(".chip").forEach(b => b.classList.toggle("active", activeTags.has(b.dataset.tag)));
+    }
+
+    function setView(v) {
+      view = v;
+      localStorage.setItem("recipeView", v);
+      results.className = v === "list" ? "list" : "grid";
+      viewToggle.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.view === v));
+    }
+    viewToggle.querySelectorAll("button").forEach(b => { b.onclick = () => { setView(b.dataset.view); render(); }; });
+
+    // ---- Fuzzy search ----
+    function lev(a, b) {
+      const m = a.length, n = b.length;
+      if (!m) return n; if (!n) return m;
+      let prev = Array.from({ length: n + 1 }, (_, i) => i);
+      for (let i = 1; i <= m; i++) {
+        const cur = [i];
+        for (let j = 1; j <= n; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+        }
+        prev = cur;
+      }
+      return prev[n];
+    }
+    function isSubseq(q, w) {
+      let i = 0;
+      for (const ch of w) { if (ch === q[i]) i++; if (i === q.length) return true; }
+      return q.length === 0;
+    }
+    function wordScore(q, w) {
+      if (q === w) return 1;
+      if (w.startsWith(q)) return 0.95;
+      if (w.includes(q)) return 0.85;
+      const sim = 1 - lev(q, w) / Math.max(q.length, w.length);
+      if (sim >= 0.7) return sim * 0.8;      // typo tolerance
+      if (q.length >= 3 && isSubseq(q, w)) return 0.55;
+      return 0;
+    }
+    function searchScore(r) {
+      const qWords = query.toLowerCase().split(/\s+/).filter(Boolean);
+      if (!qWords.length) return 1;
+      const titleWords = (r.title || "").toLowerCase().split(/\s+/).filter(Boolean);
+      const bodyWords = [r.description, r.category, ...r._tags, ...(r.ingredients || [])]
+        .join(" ").toLowerCase().split(/\s+/).filter(Boolean);
+      let total = 0;
+      for (const qw of qWords) {
+        let best = 0;
+        for (const tw of titleWords) best = Math.max(best, wordScore(qw, tw));
+        for (const bw of bodyWords) best = Math.max(best, wordScore(qw, bw) * 0.85);
+        if (best < 0.5) return 0;            // every search word must match something
+        total += best;
+      }
+      return total / qWords.length;
+    }
+
     function render() {
-      const q = query.toLowerCase();
-      const list = recipes.filter(r => {
-        const matchCat = activeCat === "All" || r.category === activeCat;
-        const hay = [r.title, r.description, r.category, ...(r.ingredients || [])]
-          .join(" ").toLowerCase();
-        return matchCat && hay.includes(q);
-      });
+      const scored = recipes
+        .filter(r => activeCat === "All" || r.category === activeCat)
+        .filter(r => [...activeTags].every(t => r._tags.includes(t)))
+        .map(r => ({ r, score: searchScore(r) }))
+        .filter(x => x.score > 0);
+
+      if (query) scored.sort((a, b) => b.score - a.score);
+      else scored.sort((a, b) => a.r.title.localeCompare(b.r.title));
+
+      const list = scored.map(x => x.r);
       empty.style.display = list.length ? "none" : "block";
-      grid.innerHTML = list.map((r, i) => {
+
+      const filtering = activeCat !== "All" || activeTags.size || query;
+      clearBtn.hidden = !filtering;
+      countEl.textContent = `${list.length} recipe${list.length === 1 ? "" : "s"}` +
+        (filtering ? " matching" : "");
+
+      results.innerHTML = list.map(r => {
         const idx = recipes.indexOf(r);
+        const tags = r._tags.map(t => `<span class="tag">${esc(cap(t))}</span>`).join("");
         return `<div class="card" data-i="${idx}">
-          ${r.category ? `<span class="cat">${esc(r.category)}</span>` : ""}
-          <h3>${esc(r.title)}</h3>
-          <div class="meta">${[r.time, r.servings].filter(Boolean).map(esc).join(" · ")}</div>
-          ${r.description ? `<div class="desc">${esc(r.description)}</div>` : ""}
+          <div class="body">
+            ${r.category ? `<span class="cat">${esc(r.category)}</span>` : ""}
+            <h3>${esc(r.title)}</h3>
+            <div class="meta">${[r.time, r.servings].filter(Boolean).map(esc).join(" · ")}</div>
+            ${r.description ? `<div class="desc">${esc(r.description)}</div>` : ""}
+          </div>
+          ${tags ? `<div class="taglist">${tags}</div>` : ""}
         </div>`;
       }).join("");
-      grid.querySelectorAll(".card").forEach(card => {
+
+      results.querySelectorAll(".card").forEach(card => {
         card.onclick = () => openDetail(recipes[card.dataset.i]);
       });
     }
@@ -257,6 +381,7 @@
           ${r.author ? `<span>👤 ${esc(r.author)}</span>` : ""}
         </div>
         ${r.description ? `<div class="description">${esc(r.description)}</div>` : ""}
+        ${r._tags.length ? `<div class="taglist">${r._tags.map(t => `<span class="tag">${esc(cap(t))}</span>`).join("")}</div>` : ""}
         <h4>Ingredients</h4>
         <ul>${(r.ingredients || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
         <h4>Steps</h4>
@@ -267,12 +392,12 @@
       overlay.classList.add("open");
       document.body.style.overflow = "hidden";
     }
+    function closeDetail() { overlay.classList.remove("open"); document.body.style.overflow = ""; }
 
-    function closeDetail() {
-      overlay.classList.remove("open");
-      document.body.style.overflow = "";
-    }
-
+    clearBtn.onclick = () => {
+      activeCat = "All"; activeTags.clear(); query = ""; searchEl.value = "";
+      syncChips(); render();
+    };
     overlay.onclick = e => { if (e.target === overlay) closeDetail(); };
     document.addEventListener("keydown", e => { if (e.key === "Escape") closeDetail(); });
     searchEl.oninput = e => { query = e.target.value; render(); };
@@ -281,6 +406,7 @@
       return String(s).replace(/[&<>"']/g, c =>
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     }
+    function cap(s) { return String(s).charAt(0).toUpperCase() + String(s).slice(1); }
   </script>
 </body>
 </html>
