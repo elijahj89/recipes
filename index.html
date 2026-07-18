@@ -255,31 +255,61 @@
       margin-top: 1.8rem; padding: 1rem 1.2rem; background: var(--accent-soft);
       border-radius: 10px; font-size: 0.95rem;
     }
-    /* "New version available" reload prompt */
+    /* "New version available" reload prompt — full-width bottom bar */
     .update-toast {
-      position: fixed; left: 50%; bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-      transform: translate(-50%, 220%);
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
       display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.1rem calc(1rem + env(safe-area-inset-bottom, 0px));
       background: var(--accent); color: #fff;
-      padding: 0.65rem 0.7rem 0.65rem 1.1rem; border-radius: 14px;
-      box-shadow: 0 10px 34px rgba(0,0,0,0.28); z-index: 60;
-      max-width: calc(100vw - 1.5rem); font-size: 0.92rem;
-      transition: transform 0.38s cubic-bezier(0.32,0.72,0,1);
+      box-shadow: 0 -10px 34px rgba(0,0,0,0.3);
+      transform: translateY(100%);
+      transition: transform 0.42s cubic-bezier(0.32,0.72,0,1);
     }
-    .update-toast.show { transform: translate(-50%, 0); }
-    .update-toast .ut-text { line-height: 1.3; }
+    .update-toast.show { transform: translateY(0); }
+    .update-toast .ut-icon { font-size: 1.5rem; line-height: 1; animation: utpulse 1.7s ease-in-out infinite; }
+    @keyframes utpulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.16); } }
+    .update-toast .ut-body { flex: 1; min-width: 0; }
+    .update-toast .ut-title { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
+    .update-toast .ut-sub { font-size: 0.85rem; opacity: 0.92; line-height: 1.3; }
     .update-toast .ut-btn {
       background: #fff; color: var(--accent); border: none;
-      padding: 0.45rem 0.95rem; border-radius: 9px; font-weight: 700;
-      cursor: pointer; font-size: 0.9rem; white-space: nowrap;
+      padding: 0.62rem 1.15rem; border-radius: 11px; font-weight: 800; font-size: 1rem;
+      cursor: pointer; white-space: nowrap; min-width: 92px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+      transition: transform 0.08s ease;
     }
+    .update-toast .ut-btn:active { transform: scale(0.95); }
+    .update-toast .ut-btn:disabled { cursor: default; opacity: 0.9; }
     .update-toast .ut-dismiss {
-      background: none; border: none; color: rgba(255,255,255,0.85);
-      font-size: 1.35rem; cursor: pointer; line-height: 1; padding: 0 0.25rem;
+      background: none; border: none; color: rgba(255,255,255,0.9);
+      font-size: 0.82rem; font-weight: 600; cursor: pointer; padding: 0.4rem 0.2rem;
+      text-decoration: underline; white-space: nowrap;
     }
+
+    /* Spinner + full-screen "Updating…" cover shown while the reload navigates */
+    .spinner {
+      display: inline-block; width: 1em; height: 1em;
+      border: 2px solid currentColor; border-top-color: transparent;
+      border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -0.15em;
+    }
+    .spinner.big { width: 2.4rem; height: 2.4rem; border-width: 3px; color: var(--accent); }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .reload-cover {
+      position: fixed; inset: 0; z-index: 70; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: opacity 0.25s ease, visibility 0.25s;
+    }
+    .reload-cover.show { opacity: 1; visibility: visible; }
+    .reload-cover .rc-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 1.1rem;
+      color: var(--muted); font-size: 0.98rem; font-weight: 600;
+    }
+
+    @media (max-width: 360px) { .update-toast .ut-sub { display: none; } }
     @media (prefers-reduced-motion: reduce) {
       .recipe-screen, .recipe-screen.open .recipe-content { transition: opacity 0.2s ease; animation: none; transform: none; }
       .update-toast { transition: opacity 0.2s ease; }
+      .update-toast .ut-icon { animation: none; }
     }
     @media print {
       .topstick, .toolbar, #results, .topbar { display: none; }
@@ -345,10 +375,21 @@
     <div class="recipe-content" id="recipeContent"></div>
   </div>
 
-  <div class="update-toast" id="updateToast" role="alert" aria-live="polite">
-    <span class="ut-text">🔄 A new version is available.</span>
+  <div class="update-toast" id="updateToast" role="alert" aria-live="assertive">
+    <span class="ut-icon" aria-hidden="true">🔄</span>
+    <div class="ut-body">
+      <div class="ut-title">Update available</div>
+      <div class="ut-sub">Reload to get the latest recipes.</div>
+    </div>
     <button class="ut-btn" id="reloadBtn">Reload</button>
-    <button class="ut-dismiss" id="updateDismiss" aria-label="Dismiss">×</button>
+    <button class="ut-dismiss" id="updateDismiss">Later</button>
+  </div>
+
+  <div class="reload-cover" id="reloadCover" aria-hidden="true">
+    <div class="rc-inner">
+      <span class="spinner big"></span>
+      <div>Updating to the latest version…</div>
+    </div>
   </div>
 
   <script>
@@ -702,7 +743,8 @@
     const updateToast = document.getElementById("updateToast");
     const reloadBtn = document.getElementById("reloadBtn");
     const updateDismiss = document.getElementById("updateDismiss");
-    let runningVersion = null, pendingVersion = null, dismissedVersion = null;
+    const reloadCover = document.getElementById("reloadCover");
+    let runningVersion = null, pendingVersion = null, dismissedVersion = null, reloading = false;
 
     async function fetchVersion() {
       try {
@@ -724,11 +766,22 @@
     }
 
     function forceReload() {
+      if (reloading) return;                 // ignore repeat taps
+      reloading = true;
+      // Instant feedback: spinner in the button + a full-screen "Updating…" cover
+      // that hides the old banner, so it's obvious the reload has begun.
+      reloadBtn.disabled = true;
+      reloadBtn.innerHTML = '<span class="spinner"></span>Updating…';
+      reloadCover.classList.add("show");
+      reloadCover.setAttribute("aria-hidden", "false");
+
       const u = new URL(location.href);
       // Key the cache-bust to the VERSION (not a timestamp) so the CDN can cache
       // it — this reloads fresh content but stays fast instead of a cold fetch.
       u.searchParams.set("v", pendingVersion || runningVersion || "1");
-      location.replace(u.toString());
+      const target = u.toString();
+      // Two frames so the cover/spinner paint before navigation blocks the thread.
+      requestAnimationFrame(() => requestAnimationFrame(() => location.replace(target)));
     }
 
     reloadBtn.onclick = forceReload;
