@@ -30,5 +30,46 @@
       "Pull the chicken when it hits 160°F internal — it will carry over to 165°F while resting. Rest for 5 minutes before slicing. This keeps the juices locked in."
     ],
     "notes": "Thighs vs breasts: Thighs are more forgiving on a flat-top — more fat means more moisture and better crust. Breasts work great too but watch your temp closely. Don't skip the pat dry: moisture on the surface = steam, not sear. Paper towels make the difference between golden and grey. Honey watch: the honey in the marinade caramelizes fast — if you see it darkening too quickly, drop to medium heat. Batch cooking: this marinade scales easily, great for meal prepping. Slice leftovers for salads, wraps, or rice bowls."
+  },
+  {
+    "id": "chicken-tortilla-soup",
+    "title": "Chicken Tortilla Soup",
+    "category": "Dinner",
+    "servings": "6",
+    "time": "1 hr",
+    "author": "Family",
+    "tags": ["chicken", "soup"],
+    "description": "A hearty, brothy chicken tortilla soup with black beans, corn, and lime, topped with crispy homemade tortilla strips and avocado.",
+    "ingredients": [
+      "— Soup —",
+      "1 Tbsp olive oil",
+      "1 medium onion, chopped",
+      "3 garlic cloves, minced",
+      "1 jalapeño pepper, seeded and diced",
+      "1 tsp ground cumin",
+      "1 tsp chili powder",
+      "1 lb chicken breasts (2 medium)",
+      "20 oz can crushed tomatoes",
+      "32 oz chicken broth",
+      "14 oz can black beans, drained and rinsed",
+      "14 oz can corn, drained and rinsed",
+      "1/2 cup cilantro, chopped, divided (reserve 1/4 for garnish)",
+      "1 lime, juiced",
+      "1 tsp salt, or to taste",
+      "— Homemade Tortilla Strips —",
+      "1/4 cup olive oil",
+      "8 corn tortillas (6\" tortillas)",
+      "— Toppings —",
+      "1 large avocado, diced",
+      "1 lime, cut into wedges, to serve"
+    ],
+    "steps": [
+      "Tortilla strips: Preheat a pan with 1/4 cup oil over medium-high heat. Cut tortillas into thin strips and fry them in batches in the hot oil until crisp. Remove from the pan and let them drain on a paper towel. Repeat with the remaining strips, adding more oil as needed, then set aside.",
+      "Soup: Preheat a pot with 1 Tbsp oil over medium-high heat. Add the chopped onion, garlic, and jalapeño and sauté until the veggies soften.",
+      "Add the whole chicken breasts, corn, beans, chili powder, cumin, crushed tomatoes, salt, 1/4 cup of the cilantro, and chicken broth. Bring to a boil and let simmer for at least 25 minutes.",
+      "Remove the chicken from the pot and shred it using 2 forks. Add the shredded chicken back to the soup and simmer another 5 minutes, then stir in the lime juice.",
+      "Serve the soup with tortilla strips, pieces of avocado, the reserved fresh cilantro, and lime wedges."
+    ],
+    "notes": "Reserve 1/4 of the chopped cilantro for garnish. Add the lime juice at the end so it stays bright."
   }
 ]
