@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Family Recipes</title>
+  <title>Elijah's Kitchen</title>
   <style>
     :root {
       --bg: #fdfbf7;
@@ -60,6 +60,42 @@
       color: var(--text);
     }
     #search:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+
+    /* Google-style search suggestions dropdown */
+    .suggest {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+      overflow: hidden auto; max-height: 60vh; z-index: 30; display: none;
+    }
+    .suggest.open { display: block; }
+    .suggest-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem 0.9rem; cursor: pointer;
+      border-bottom: 1px solid var(--border);
+    }
+    .suggest-item:last-child { border-bottom: none; }
+    .suggest-item:hover, .suggest-item.active { background: var(--accent-soft); }
+    .suggest-item .s-emoji { font-size: 1.05rem; line-height: 1; }
+    .suggest-item .s-main { flex: 1; min-width: 0; }
+    .suggest-item .s-title {
+      font-weight: 600; font-size: 0.98rem; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .suggest-item .s-title mark {
+      background: transparent; color: var(--accent); font-weight: 700; padding: 0;
+    }
+    .suggest-item .s-meta {
+      color: var(--muted); font-size: 0.8rem; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .suggest-item .s-cat {
+      flex-shrink: 0; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--accent); background: var(--accent-soft);
+      padding: 0.15rem 0.5rem; border-radius: 6px; font-weight: 600;
+    }
+    .suggest-empty { padding: 0.9rem; color: var(--muted); font-size: 0.9rem; text-align: center; }
+
     .view-toggle { display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
     .view-toggle button {
       background: var(--card); border: none; padding: 0.6rem 0.75rem;
@@ -169,7 +205,7 @@
 </head>
 <body>
   <header>
-    <h1>🍲 Family Recipes</h1>
+    <h1>🍲 Elijah's Kitchen</h1>
     <div class="sub">Our collection, all in one place.</div>
   </header>
 
@@ -177,7 +213,8 @@
     <div class="searchrow">
       <div class="search-wrap">
         <span class="icon">🔍</span>
-        <input id="search" type="search" placeholder="Search recipes or ingredients (typos are fine)…" autocomplete="off" />
+        <input id="search" type="search" placeholder="Search recipes or ingredients (typos are fine)…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list" />
+        <div class="suggest" id="suggest" role="listbox"></div>
       </div>
       <div class="view-toggle" id="viewToggle">
         <button data-view="grid" title="Grid view" aria-label="Grid view">▦</button>
@@ -219,7 +256,9 @@
     const overlay = document.getElementById("overlay");
     const detail = document.getElementById("detail");
     const searchEl = document.getElementById("search");
+    const suggest = document.getElementById("suggest");
     const countEl = document.getElementById("count");
+    let suggestIndex = -1;
     const clearBtn = document.getElementById("clearBtn");
     const viewToggle = document.getElementById("viewToggle");
 
@@ -316,8 +355,8 @@
       if (q.length >= 3 && isSubseq(q, w)) return 0.55;
       return 0;
     }
-    function searchScore(r) {
-      const qWords = query.toLowerCase().split(/\s+/).filter(Boolean);
+    function searchScore(r, q) {
+      const qWords = q.toLowerCase().split(/\s+/).filter(Boolean);
       if (!qWords.length) return 1;
       const titleWords = (r.title || "").toLowerCase().split(/\s+/).filter(Boolean);
       const bodyWords = [r.description, r.category, ...r._tags, ...(r.ingredients || [])]
@@ -334,19 +373,14 @@
     }
 
     function render() {
-      const scored = recipes
+      const list = recipes
         .filter(r => activeCat === "All" || r.category === activeCat)
         .filter(r => [...activeTags].every(t => r._tags.includes(t)))
-        .map(r => ({ r, score: searchScore(r) }))
-        .filter(x => x.score > 0);
+        .sort((a, b) => a.title.localeCompare(b.title));
 
-      if (query) scored.sort((a, b) => b.score - a.score);
-      else scored.sort((a, b) => a.r.title.localeCompare(b.r.title));
-
-      const list = scored.map(x => x.r);
       empty.style.display = list.length ? "none" : "block";
 
-      const filtering = activeCat !== "All" || activeTags.size || query;
+      const filtering = activeCat !== "All" || activeTags.size > 0;
       clearBtn.hidden = !filtering;
       countEl.textContent = `${list.length} recipe${list.length === 1 ? "" : "s"}` +
         (filtering ? " matching" : "");
@@ -368,6 +402,62 @@
       results.querySelectorAll(".card").forEach(card => {
         card.onclick = () => openDetail(recipes[card.dataset.i]);
       });
+    }
+
+    // ---- Google-style search suggestions ----
+    function renderSuggestions() {
+      const q = query.trim();
+      if (!q) { closeSuggest(); return; }
+      const scored = recipes
+        .map(r => ({ r, score: searchScore(r, q) }))
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 8);
+      suggestIndex = -1;
+
+      if (!scored.length) {
+        suggest.innerHTML = `<div class="suggest-empty">No recipes match “${esc(q)}”.</div>`;
+        openSuggest();
+        return;
+      }
+      suggest.innerHTML = scored.map(({ r }) => {
+        const idx = recipes.indexOf(r);
+        const meta = [r.time, r._tags.map(cap).join(", ")].filter(Boolean).map(esc).join(" · ");
+        return `<div class="suggest-item" role="option" data-i="${idx}">
+          <span class="s-emoji">🍽️</span>
+          <div class="s-main">
+            <div class="s-title">${highlight(r.title, q)}</div>
+            ${meta ? `<div class="s-meta">${meta}</div>` : ""}
+          </div>
+          ${r.category ? `<span class="s-cat">${esc(r.category)}</span>` : ""}
+        </div>`;
+      }).join("");
+
+      suggest.querySelectorAll(".suggest-item").forEach(el => {
+        // mousedown (not click) so it fires before the input's blur/outside-click closes the panel
+        el.onmousedown = e => { e.preventDefault(); openDetail(recipes[el.dataset.i]); closeSuggest(); };
+      });
+      openSuggest();
+    }
+
+    function highlight(text, q) {
+      const escaped = esc(text);
+      const present = q.toLowerCase().split(/\s+/).filter(Boolean)
+        .filter(w => text.toLowerCase().includes(w));
+      if (!present.length) return escaped;
+      const re = new RegExp("(" + present.map(escapeReg).sort((a, b) => b.length - a.length).join("|") + ")", "gi");
+      return escaped.replace(re, "<mark>$1</mark>");
+    }
+
+    function openSuggest() { suggest.classList.add("open"); searchEl.setAttribute("aria-expanded", "true"); }
+    function closeSuggest() {
+      suggest.classList.remove("open");
+      searchEl.setAttribute("aria-expanded", "false");
+      suggestIndex = -1;
+    }
+    function setActive(items) {
+      items.forEach((el, i) => el.classList.toggle("active", i === suggestIndex));
+      if (suggestIndex >= 0 && items[suggestIndex]) items[suggestIndex].scrollIntoView({ block: "nearest" });
     }
 
     function openDetail(r) {
@@ -395,17 +485,44 @@
     function closeDetail() { overlay.classList.remove("open"); document.body.style.overflow = ""; }
 
     clearBtn.onclick = () => {
-      activeCat = "All"; activeTags.clear(); query = ""; searchEl.value = "";
+      activeCat = "All"; activeTags.clear();
       syncChips(); render();
     };
     overlay.onclick = e => { if (e.target === overlay) closeDetail(); };
     document.addEventListener("keydown", e => { if (e.key === "Escape") closeDetail(); });
-    searchEl.oninput = e => { query = e.target.value; render(); };
+
+    // Search box -> suggestion dropdown
+    searchEl.oninput = e => { query = e.target.value; renderSuggestions(); };
+    searchEl.addEventListener("focus", () => { if (query.trim()) renderSuggestions(); });
+    searchEl.addEventListener("keydown", e => {
+      const items = [...suggest.querySelectorAll(".suggest-item")];
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (!items.length) return;
+        suggestIndex = Math.min(suggestIndex + 1, items.length - 1);
+        setActive(items);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!items.length) return;
+        suggestIndex = Math.max(suggestIndex - 1, 0);
+        setActive(items);
+      } else if (e.key === "Enter") {
+        if (items.length) {
+          const el = items[suggestIndex >= 0 ? suggestIndex : 0];
+          openDetail(recipes[el.dataset.i]);
+          closeSuggest();
+        }
+      } else if (e.key === "Escape") {
+        closeSuggest();
+      }
+    });
+    document.addEventListener("click", e => { if (!e.target.closest(".search-wrap")) closeSuggest(); });
 
     function esc(s) {
       return String(s).replace(/[&<>"']/g, c =>
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     }
+    function escapeReg(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
     function cap(s) { return String(s).charAt(0).toUpperCase() + String(s).slice(1); }
   </script>
 </body>
