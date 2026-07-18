@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Family Recipes</title>
+  <style>
+    :root {
+      --bg: #fdfbf7;
+      --card: #ffffff;
+      --text: #2b2620;
+      --muted: #7a7268;
+      --accent: #c0562f;
+      --accent-soft: #f4e4dc;
+      --border: #eae3d8;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1815;
+        --card: #23201c;
+        --text: #ece6dd;
+        --muted: #9c9488;
+        --accent: #e07a52;
+        --accent-soft: #3a2a22;
+        --border: #33302a;
+        --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.2);
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center;
+      padding: 3rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    header .sub { color: var(--muted); margin-top: 0.4rem; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 1.5rem; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+    #search {
+      flex: 1 1 240px;
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
+    }
+    #search:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip {
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.15s;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.3rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+    .card .cat {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .card h3 { font-size: 1.25rem; margin: 0.7rem 0 0.4rem; }
+    .card .meta { color: var(--muted); font-size: 0.88rem; }
+    .card .desc { margin-top: 0.6rem; color: var(--muted); font-size: 0.95rem; }
+    .empty { text-align: center; color: var(--muted); padding: 4rem 1rem; }
+
+    /* Detail overlay */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-y: auto;
+      z-index: 10;
+    }
+    .overlay.open { display: flex; }
+    .detail {
+      background: var(--bg);
+      max-width: 720px;
+      width: 100%;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .close {
+      position: absolute; top: 1rem; right: 1.2rem;
+      background: none; border: none; font-size: 1.8rem;
+      color: var(--muted); cursor: pointer; line-height: 1;
+    }
+    .detail .cat {
+      display: inline-block;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--accent); background: var(--accent-soft);
+      padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 600;
+    }
+    .detail h2 { font-size: 2rem; margin: 0.8rem 0 0.5rem; letter-spacing: -0.02em; }
+    .detail .meta-row {
+      display: flex; flex-wrap: wrap; gap: 1.2rem;
+      color: var(--muted); font-size: 0.92rem; margin-bottom: 1.2rem;
+    }
+    .detail .description { font-size: 1.05rem; margin-bottom: 1.8rem; }
+    .detail h4 {
+      font-size: 1.1rem; margin: 1.8rem 0 0.8rem;
+      padding-bottom: 0.4rem; border-bottom: 2px solid var(--accent-soft);
+    }
+    .detail ul, .detail ol { padding-left: 1.4rem; }
+    .detail li { margin-bottom: 0.5rem; }
+    .detail .notes {
+      margin-top: 1.8rem; padding: 1rem 1.2rem;
+      background: var(--accent-soft); border-radius: 10px;
+      font-size: 0.95rem;
+    }
+    footer { text-align: center; color: var(--muted); padding: 2.5rem 1rem; font-size: 0.88rem; }
+    @media print {
+      header, .controls, footer, .close { display: none; }
+      .overlay { position: static; background: none; display: block; padding: 0; }
+      .detail { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍲 Family Recipes</h1>
+    <div class="sub">Our collection, all in one place.</div>
+  </header>
+
+  <div class="wrap">
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search recipes or ingredients…" />
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" style="display:none">No recipes match your search.</div>
+  </div>
+
+  <footer>Made with love. To add a recipe, ask Claude Code to update <code>recipes.json</code>.</footer>
+
+  <div class="overlay" id="overlay">
+    <div class="detail" id="detail"></div>
+  </div>
+
+  <script>
+    let recipes = [];
+    let activeCat = "All";
+    let query = "";
+
+    const grid = document.getElementById("grid");
+    const empty = document.getElementById("empty");
+    const chipsEl = document.getElementById("chips");
+    const overlay = document.getElementById("overlay");
+    const detail = document.getElementById("detail");
+    const searchEl = document.getElementById("search");
+
+    fetch("recipes.json")
+      .then(r => r.json())
+      .then(data => {
+        recipes = data;
+        buildChips();
+        render();
+      })
+      .catch(() => {
+        grid.innerHTML = '<div class="empty">Could not load recipes.json.</div>';
+      });
+
+    function buildChips() {
+      const cats = ["All", ...new Set(recipes.map(r => r.category).filter(Boolean))];
+      chipsEl.innerHTML = cats.map(c =>
+        `<button class="chip${c === activeCat ? " active" : ""}" data-cat="${esc(c)}">${esc(c)}</button>`
+      ).join("");
+      chipsEl.querySelectorAll(".chip").forEach(btn => {
+        btn.onclick = () => {
+          activeCat = btn.dataset.cat;
+          buildChips();
+          render();
+        };
+      });
+    }
+
+    function render() {
+      const q = query.toLowerCase();
+      const list = recipes.filter(r => {
+        const matchCat = activeCat === "All" || r.category === activeCat;
+        const hay = [r.title, r.description, r.category, ...(r.ingredients || [])]
+          .join(" ").toLowerCase();
+        return matchCat && hay.includes(q);
+      });
+      empty.style.display = list.length ? "none" : "block";
+      grid.innerHTML = list.map((r, i) => {
+        const idx = recipes.indexOf(r);
+        return `<div class="card" data-i="${idx}">
+          ${r.category ? `<span class="cat">${esc(r.category)}</span>` : ""}
+          <h3>${esc(r.title)}</h3>
+          <div class="meta">${[r.time, r.servings].filter(Boolean).map(esc).join(" · ")}</div>
+          ${r.description ? `<div class="desc">${esc(r.description)}</div>` : ""}
+        </div>`;
+      }).join("");
+      grid.querySelectorAll(".card").forEach(card => {
+        card.onclick = () => openDetail(recipes[card.dataset.i]);
+      });
+    }
+
+    function openDetail(r) {
+      detail.innerHTML = `
+        <button class="close" aria-label="Close">×</button>
+        ${r.category ? `<span class="cat">${esc(r.category)}</span>` : ""}
+        <h2>${esc(r.title)}</h2>
+        <div class="meta-row">
+          ${r.time ? `<span>⏱ ${esc(r.time)}</span>` : ""}
+          ${r.servings ? `<span>🍽 ${esc(r.servings)}</span>` : ""}
+          ${r.author ? `<span>👤 ${esc(r.author)}</span>` : ""}
+        </div>
+        ${r.description ? `<div class="description">${esc(r.description)}</div>` : ""}
+        <h4>Ingredients</h4>
+        <ul>${(r.ingredients || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        <h4>Steps</h4>
+        <ol>${(r.steps || []).map(x => `<li>${esc(x)}</li>`).join("")}</ol>
+        ${r.notes ? `<div class="notes">💡 ${esc(r.notes)}</div>` : ""}
+      `;
+      detail.querySelector(".close").onclick = closeDetail;
+      overlay.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeDetail() {
+      overlay.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    overlay.onclick = e => { if (e.target === overlay) closeDetail(); };
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeDetail(); });
+    searchEl.oninput = e => { query = e.target.value; render(); };
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, c =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+  </script>
+</body>
+</html>
