@@ -725,7 +725,9 @@
 
     function forceReload() {
       const u = new URL(location.href);
-      u.searchParams.set("v", Date.now().toString());  // bust the shell cache too
+      // Key the cache-bust to the VERSION (not a timestamp) so the CDN can cache
+      // it — this reloads fresh content but stays fast instead of a cold fetch.
+      u.searchParams.set("v", pendingVersion || runningVersion || "1");
       location.replace(u.toString());
     }
 
@@ -743,9 +745,12 @@
 
     (async function initUpdateCheck() {
       runningVersion = await fetchVersion();
-      setInterval(checkForUpdate, 60000);
+      setInterval(checkForUpdate, 20000);
+      // Fire an immediate check whenever the app resumes — the moment a
+      // home-screen app is reopened is when a pending update should surface.
       document.addEventListener("visibilitychange", () => { if (!document.hidden) checkForUpdate(); });
       window.addEventListener("focus", checkForUpdate);
+      window.addEventListener("pageshow", checkForUpdate);
     })();
   </script>
 </body>
