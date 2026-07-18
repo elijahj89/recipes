@@ -29,6 +29,7 @@
       }
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); }  /* keeps the inter-page flash on reload the same color, not white */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
@@ -255,31 +256,36 @@
       margin-top: 1.8rem; padding: 1rem 1.2rem; background: var(--accent-soft);
       border-radius: 10px; font-size: 0.95rem;
     }
-    /* "New version available" reload prompt — full-width bottom bar */
-    .update-toast {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 1rem 1.1rem calc(1rem + env(safe-area-inset-bottom, 0px));
-      background: var(--accent); color: #fff;
-      box-shadow: 0 -10px 34px rgba(0,0,0,0.3);
-      transform: translateY(100%);
-      transition: transform 0.42s cubic-bezier(0.32,0.72,0,1);
+    /* "Update available" prompt — centered modal over a dimmed overlay */
+    .update-scrim {
+      position: fixed; inset: 0; z-index: 60;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem; padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+      opacity: 0; visibility: hidden; transition: opacity 0.28s ease, visibility 0.28s;
     }
-    .update-toast.show { transform: translateY(0); }
-    .update-toast .ut-icon { font-size: 1.5rem; line-height: 1; animation: utpulse 1.7s ease-in-out infinite; }
-    @keyframes utpulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.16); } }
-    .update-toast .ut-body { flex: 1; min-width: 0; }
-    .update-toast .ut-title { font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
-    .update-toast .ut-sub { font-size: 0.85rem; opacity: 0.92; line-height: 1.3; }
-    .update-toast .ut-btn {
-      background: #fff; color: var(--accent); border: none;
-      padding: 0.62rem 1.15rem; border-radius: 11px; font-weight: 800; font-size: 1rem;
-      cursor: pointer; white-space: nowrap; min-width: 92px;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
-      transition: transform 0.08s ease;
+    .update-scrim.show { opacity: 1; visibility: visible; }
+    .update-modal {
+      background: var(--card); color: var(--text);
+      border-radius: 20px; padding: 2rem 1.75rem 1.75rem;
+      max-width: 360px; width: 100%; text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+      transform: translateY(14px) scale(0.97);
+      transition: transform 0.34s cubic-bezier(0.32,0.72,0,1);
     }
-    .update-toast .ut-btn:active { transform: scale(0.95); }
-    .update-toast .ut-btn:disabled { cursor: default; opacity: 0.9; }
+    .update-scrim.show .update-modal { transform: none; }
+    @keyframes utpulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.14); } }
+    .um-icon { font-size: 2.6rem; line-height: 1; display: inline-block; animation: utpulse 1.7s ease-in-out infinite; }
+    .um-title { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.01em; margin-top: 0.7rem; }
+    .um-sub { color: var(--muted); font-size: 0.98rem; margin: 0.5rem 0 1.5rem; line-height: 1.4; }
+    .um-btn {
+      width: 100%; background: var(--accent); color: #fff; border: none;
+      padding: 0.95rem 1rem; border-radius: 13px; font-weight: 800; font-size: 1.05rem;
+      cursor: pointer; transition: transform 0.08s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .um-btn:active { transform: scale(0.97); }
+    .um-btn:disabled { opacity: 0.9; cursor: default; }
 
     /* Spinner + full-screen "Updating…" cover shown while the reload navigates */
     .spinner {
@@ -300,11 +306,11 @@
       color: var(--muted); font-size: 0.98rem; font-weight: 600;
     }
 
-    @media (max-width: 360px) { .update-toast .ut-sub { display: none; } }
     @media (prefers-reduced-motion: reduce) {
       .recipe-screen, .recipe-screen.open .recipe-content { transition: opacity 0.2s ease; animation: none; transform: none; }
-      .update-toast { transition: opacity 0.2s ease; }
-      .update-toast .ut-icon { animation: none; }
+      .update-scrim { transition: opacity 0.2s ease; }
+      .update-modal { transition: none; transform: none; }
+      .um-icon { animation: none; }
     }
     @media print {
       .topstick, .toolbar, #results, .topbar { display: none; }
@@ -370,13 +376,13 @@
     <div class="recipe-content" id="recipeContent"></div>
   </div>
 
-  <div class="update-toast" id="updateToast" role="alert" aria-live="assertive">
-    <span class="ut-icon" aria-hidden="true">🔄</span>
-    <div class="ut-body">
-      <div class="ut-title">Update available</div>
-      <div class="ut-sub">Reload to get the latest recipes.</div>
+  <div class="update-scrim" id="updateScrim">
+    <div class="update-modal" role="alertdialog" aria-modal="true" aria-labelledby="umTitle" aria-describedby="umSub">
+      <span class="um-icon" aria-hidden="true">🔄</span>
+      <div class="um-title" id="umTitle">Update available</div>
+      <div class="um-sub" id="umSub">A new version is ready. Reload to get the latest.</div>
+      <button class="um-btn" id="reloadBtn">Reload now</button>
     </div>
-    <button class="ut-btn" id="reloadBtn">Reload</button>
   </div>
 
   <div class="reload-cover" id="reloadCover" aria-hidden="true">
@@ -385,6 +391,7 @@
       <div>Updating to the latest version…</div>
     </div>
   </div>
+  <script>try { if (sessionStorage.getItem("sfk-updating")) document.getElementById("reloadCover").classList.add("show"); } catch (e) {}</script>
 
   <script>
     let recipes = [];
@@ -429,16 +436,30 @@
       return [...set];
     }
 
-    fetch("recipes.json", { cache: "no-store" })
-      .then(r => r.json())
-      .then(data => {
-        recipes = data.map(r => ({ ...r, _tags: deriveTags(r) }));
-        buildFilters();
-        setView(view);
-        render();
-        router();
-      })
-      .catch(() => { results.innerHTML = '<div class="empty">Could not load recipes.json.</div>'; });
+    function loadRecipes() {
+      return fetch("recipes.json", { cache: "no-store" })
+        .then(r => r.json())
+        .then(data => {
+          recipes = data.map(r => ({ ...r, _tags: deriveTags(r) }));
+          buildFilters();
+          setView(view);
+          render();
+          router();
+        });
+    }
+
+    // Initial load. If we arrived here from an in-app update reload, the spinner
+    // cover is already showing (see the inline script by #reloadCover) — keep it
+    // up until recipes are actually rendered, then hide it.
+    (function initialLoad() {
+      const wasUpdating = !!sessionStorage.getItem("sfk-updating");
+      loadRecipes()
+        .catch(() => { results.innerHTML = '<div class="empty">Could not load recipes.json.</div>'; })
+        .finally(() => {
+          if (wasUpdating) sessionStorage.removeItem("sfk-updating");
+          hideCover();
+        });
+    })();
 
     function buildFilters() {
       const cats = ["All", ...new Set(recipes.map(r => r.category).filter(Boolean))];
@@ -731,13 +752,20 @@
     function escapeReg(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
     function cap(s) { return String(s).charAt(0).toUpperCase() + String(s).slice(1); }
 
-    // ---- "New version available" checker ----
-    // Polls version.json (cache-bypassed) on a timer and whenever the app is
-    // brought back to the foreground — the key moment for home-screen apps.
-    const updateToast = document.getElementById("updateToast");
+    // ---- Automatic update detection ----
+    // Signs the deployed files (index.html + recipes.json) and re-checks on a
+    // timer and whenever the app resumes. Any change is detected automatically —
+    // nothing to bump by hand. A code change needs a full reload; a recipe-only
+    // change is refreshed in place (no navigation).
+    const updateScrim = document.getElementById("updateScrim");
     const reloadBtn = document.getElementById("reloadBtn");
     const reloadCover = document.getElementById("reloadCover");
-    let runningSig = null, pendingToken = "1", reloading = false;
+    let baseIndexSig = null, baseRecipesSig = null;
+    let latestIndexSig = null, latestRecipesSig = null;
+    let pendingCodeChanged = false, pendingToken = "1", reloading = false;
+
+    function showCover() { reloadCover.classList.add("show"); reloadCover.setAttribute("aria-hidden", "false"); }
+    function hideCover() { reloadCover.classList.remove("show"); reloadCover.setAttribute("aria-hidden", "true"); }
 
     // Small string hash -> short URL-safe token (djb2).
     function hashStr(s) {
@@ -747,9 +775,7 @@
     }
 
     // Signature of one deployed file. Prefers a cheap HEAD (ETag/Last-Modified);
-    // if the server exposes neither, falls back to hashing the body. This means
-    // ANY change to the deployed files is detected automatically — there is no
-    // version number to bump by hand.
+    // if the server exposes neither, falls back to hashing the body.
     async function sigFor(path) {
       const url = path + "?_=" + Date.now();
       try {
@@ -766,42 +792,48 @@
       } catch (e) { return null; }
     }
 
-    async function fetchSignature() {
-      const [a, b] = await Promise.all([sigFor("index.html"), sigFor("recipes.json")]);
-      if (!a || !b) return null;                 // couldn't read: don't prompt
-      return a + "|" + b;
-    }
-
     async function checkForUpdate() {
-      const latest = await fetchSignature();
-      if (!latest) return;                       // offline / unreachable: try again later
-      if (!runningSig) { runningSig = latest; return; }  // adopt baseline
-      if (latest !== runningSig) {
-        pendingToken = hashStr(latest);
-        updateToast.classList.add("show");
+      if (reloading) return;
+      const [idx, rec] = await Promise.all([sigFor("index.html"), sigFor("recipes.json")]);
+      if (!idx || !rec) return;                                  // unreachable: try later
+      if (baseIndexSig === null) { baseIndexSig = idx; baseRecipesSig = rec; return; }  // baseline
+      const codeChanged = idx !== baseIndexSig;
+      const recipesChanged = rec !== baseRecipesSig;
+      if (codeChanged || recipesChanged) {
+        pendingCodeChanged = codeChanged;
+        latestIndexSig = idx; latestRecipesSig = rec;
+        pendingToken = hashStr(idx + "|" + rec);
+        updateScrim.classList.add("show");
       }
     }
 
-    function forceReload() {
-      if (reloading) return;                 // ignore repeat taps
+    async function applyUpdate() {
+      if (reloading) return;                       // ignore repeat taps
       reloading = true;
-      // Instant feedback: spinner in the button + a full-screen "Updating…" cover
-      // that hides the old banner, so it's obvious the reload has begun.
-      reloadBtn.disabled = true;
-      reloadBtn.innerHTML = '<span class="spinner"></span>Updating…';
-      reloadCover.classList.add("show");
-      reloadCover.setAttribute("aria-hidden", "false");
+      updateScrim.classList.remove("show");
+      showCover();                                 // spinner stays up until content is truly ready
 
-      const u = new URL(location.href);
-      // Key the cache-bust to the new content signature (stable → CDN-cacheable),
-      // so the reload is fresh but fast rather than a cold origin fetch each time.
-      u.searchParams.set("v", pendingToken);
-      const target = u.toString();
-      // Two frames so the cover/spinner paint before navigation blocks the thread.
-      requestAnimationFrame(() => requestAnimationFrame(() => location.replace(target)));
+      if (pendingCodeChanged) {
+        // App code changed -> full reload. Flag it so the freshly loaded page keeps
+        // the cover up until its recipes render (see initialLoad), avoiding the
+        // "blank shell then recipes pop in" gap.
+        try { sessionStorage.setItem("sfk-updating", "1"); } catch (e) {}
+        const u = new URL(location.href);
+        u.searchParams.set("v", pendingToken);     // stable, CDN-cacheable cache-bust
+        const target = u.toString();
+        requestAnimationFrame(() => requestAnimationFrame(() => location.replace(target)));
+      } else {
+        // Recipe-only change -> refresh data in place; no navigation, no flash.
+        try {
+          await loadRecipes();
+          baseIndexSig = latestIndexSig; baseRecipesSig = latestRecipesSig;
+        } catch (e) {}
+        hideCover();
+        reloading = false;
+      }
     }
 
-    reloadBtn.onclick = forceReload;
+    reloadBtn.onclick = applyUpdate;
 
     // Strip the cache-busting ?v= param after a forced reload (keeps the URL clean; hash routing is untouched).
     (function cleanUrl() {
@@ -813,7 +845,7 @@
     })();
 
     (async function initUpdateCheck() {
-      runningSig = await fetchSignature();
+      await checkForUpdate();                       // establishes the baseline signature
       setInterval(checkForUpdate, 20000);
       // Fire an immediate check whenever the app resumes — the moment a
       // home-screen app is reopened is when a pending update should surface.
