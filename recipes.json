@@ -41,8 +41,8 @@
     "tags": ["chicken", "soup"],
     "description": "A hearty, brothy chicken tortilla soup with black beans, corn, and lime, topped with crispy homemade tortilla strips and avocado.",
     "ingredients": [
-      "— Soup —",
-      "1 Tbsp olive oil",
+      "# Soup",
+      "1 tbsp olive oil",
       "1 medium onion, chopped",
       "3 garlic cloves, minced",
       "1 jalapeño pepper, seeded and diced",
@@ -56,20 +56,48 @@
       "1/2 cup cilantro, chopped, divided (reserve 1/4 for garnish)",
       "1 lime, juiced",
       "1 tsp salt, or to taste",
-      "— Homemade Tortilla Strips —",
+      "# Homemade Tortilla Strips",
       "1/4 cup olive oil",
-      "8 corn tortillas (6\" tortillas)",
-      "— Toppings —",
+      "8 corn tortillas (6-inch)",
+      "# Toppings",
       "1 large avocado, diced",
       "1 lime, cut into wedges, to serve"
     ],
     "steps": [
-      "Tortilla strips: Preheat a pan with 1/4 cup oil over medium-high heat. Cut tortillas into thin strips and fry them in batches in the hot oil until crisp. Remove from the pan and let them drain on a paper towel. Repeat with the remaining strips, adding more oil as needed, then set aside.",
-      "Soup: Preheat a pot with 1 Tbsp oil over medium-high heat. Add the chopped onion, garlic, and jalapeño and sauté until the veggies soften.",
+      "# Tortilla Strips",
+      "Preheat a pan with 1/4 cup oil over medium-high heat. Cut the tortillas into thin strips and fry them in batches in the hot oil until crisp. Remove from the pan and let them drain on a paper towel. Repeat with the remaining strips, adding more oil as needed, then set aside.",
+      "# Soup",
+      "Preheat a pot with 1 tbsp oil over medium-high heat. Add the chopped onion, garlic, and jalapeño and sauté until the veggies soften.",
       "Add the whole chicken breasts, corn, beans, chili powder, cumin, crushed tomatoes, salt, 1/4 cup of the cilantro, and chicken broth. Bring to a boil and let simmer for at least 25 minutes.",
       "Remove the chicken from the pot and shred it using 2 forks. Add the shredded chicken back to the soup and simmer another 5 minutes, then stir in the lime juice.",
       "Serve the soup with tortilla strips, pieces of avocado, the reserved fresh cilantro, and lime wedges."
     ],
     "notes": "Reserve 1/4 of the chopped cilantro for garnish. Add the lime juice at the end so it stays bright."
+  },
+  {
+    "id": "fluffy-pancakes",
+    "title": "Fluffy Pancakes",
+    "category": "Breakfast",
+    "servings": "8 pancakes",
+    "time": "20 min",
+    "author": "Family",
+    "tags": ["quick", "vegetarian"],
+    "description": "Light, old-fashioned pancakes from pantry staples — with an extra egg yolk for richness.",
+    "ingredients": [
+      "1 1/2 cups all-purpose flour",
+      "3 1/2 tsp baking powder",
+      "1 tbsp white sugar",
+      "1/4 tsp salt, or more to taste",
+      "1 1/4 cups milk",
+      "3 tbsp butter, melted",
+      "1 large egg plus 1 egg yolk"
+    ],
+    "steps": [
+      "Sift the flour, baking powder, sugar, and salt together in a large bowl. Make a well in the center and add the milk, melted butter, egg, and egg yolk; mix until smooth.",
+      "Heat a lightly oiled griddle or pan over medium-high heat. Pour or scoop about 1/4 cup of batter per pancake; cook until bubbles form and the edges look dry, about 2 to 3 minutes.",
+      "Flip and cook until browned on the other side. Repeat with the remaining batter.",
+      "Serve warm and enjoy."
+    ],
+    "notes": "The extra egg yolk adds richness. Rest the batter a few minutes before cooking for fluffier pancakes."
   }
 ]

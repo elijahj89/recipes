@@ -252,6 +252,12 @@
     }
     .recipe-content ul, .recipe-content ol { padding-left: 1.4rem; }
     .recipe-content li { margin-bottom: 0.5rem; }
+    .recipe-content .section-head {
+      font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--accent); font-weight: 700; margin: 1.3rem 0 0.6rem;
+    }
+    .recipe-content h4 + .section-head { margin-top: 0.6rem; }
+    .recipe-content .section-head + ul, .recipe-content .section-head + ol { margin-top: 0; }
     .recipe-content .notes {
       margin-top: 1.8rem; padding: 1rem 1.2rem; background: var(--accent-soft);
       border-radius: 10px; font-size: 0.95rem;
@@ -642,6 +648,27 @@
       location.hash = "#/recipe/" + encodeURIComponent(r.id);
     }
 
+    // A list entry that is a section header uses the global convention "# Title".
+    // It renders as a bold sub-heading; a new list starts after it (so ordered
+    // steps re-number per section).
+    function sectionHeader(s) {
+      const m = /^#\s+(.*\S)\s*$/.exec(String(s).trim());
+      return m ? m[1] : null;
+    }
+    function renderSectionedList(items, tag) {
+      let html = "", buf = [];
+      const flush = () => {
+        if (buf.length) { html += `<${tag}>${buf.map(x => `<li>${esc(x)}</li>`).join("")}</${tag}>`; buf = []; }
+      };
+      for (const item of (items || [])) {
+        const head = sectionHeader(item);
+        if (head !== null) { flush(); html += `<h5 class="section-head">${esc(head)}</h5>`; }
+        else buf.push(item);
+      }
+      flush();
+      return html;
+    }
+
     function renderRecipe(r) {
       recipeContent.innerHTML = `
         ${r.category ? `<span class="cat">${esc(r.category)}</span>` : ""}
@@ -654,9 +681,9 @@
         ${r.description ? `<div class="description">${esc(r.description)}</div>` : ""}
         ${r._tags.length ? `<div class="taglist">${r._tags.map(t => `<span class="tag">${esc(cap(t))}</span>`).join("")}</div>` : ""}
         <h4>Ingredients</h4>
-        <ul>${(r.ingredients || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        ${renderSectionedList(r.ingredients, "ul")}
         <h4>Steps</h4>
-        <ol>${(r.steps || []).map(x => `<li>${esc(x)}</li>`).join("")}</ol>
+        ${renderSectionedList(r.steps, "ol")}
         ${r.notes ? `<div class="notes">💡 ${esc(r.notes)}</div>` : ""}
       `;
     }
