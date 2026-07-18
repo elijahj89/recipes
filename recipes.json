@@ -30,5 +30,24 @@
       "Pull the chicken when it hits 160°F internal — it will carry over to 165°F while resting. Rest for 5 minutes before slicing. This keeps the juices locked in."
     ],
     "notes": "Thighs vs breasts: Thighs are more forgiving on a flat-top — more fat means more moisture and better crust. Breasts work great too but watch your temp closely. Don't skip the pat dry: moisture on the surface = steam, not sear. Paper towels make the difference between golden and grey. Honey watch: the honey in the marinade caramelizes fast — if you see it darkening too quickly, drop to medium heat. Batch cooking: this marinade scales easily, great for meal prepping. Slice leftovers for salads, wraps, or rice bowls."
+  },
+  {
+    "id": "update-test-recipe",
+    "title": "Update Test Recipe",
+    "category": "Test",
+    "servings": "1",
+    "time": "1 min",
+    "author": "Family",
+    "tags": ["test"],
+    "description": "A throwaway recipe to confirm the update prompt and in-place refresh are working. Delete me anytime.",
+    "ingredients": [
+      "1 update banner",
+      "A pinch of patience"
+    ],
+    "steps": [
+      "Watch for the 'Update available' modal to appear.",
+      "Tap 'Reload now' and confirm this recipe pops in without a jarring reload."
+    ],
+    "notes": "If you can read this on your phone, the automatic update detection worked. Ask Claude Code to remove it whenever you're done."
   }
 ]
