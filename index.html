@@ -280,11 +280,6 @@
     }
     .update-toast .ut-btn:active { transform: scale(0.95); }
     .update-toast .ut-btn:disabled { cursor: default; opacity: 0.9; }
-    .update-toast .ut-dismiss {
-      background: none; border: none; color: rgba(255,255,255,0.9);
-      font-size: 0.82rem; font-weight: 600; cursor: pointer; padding: 0.4rem 0.2rem;
-      text-decoration: underline; white-space: nowrap;
-    }
 
     /* Spinner + full-screen "Updating…" cover shown while the reload navigates */
     .spinner {
@@ -382,7 +377,6 @@
       <div class="ut-sub">Reload to get the latest recipes.</div>
     </div>
     <button class="ut-btn" id="reloadBtn">Reload</button>
-    <button class="ut-dismiss" id="updateDismiss">Later</button>
   </div>
 
   <div class="reload-cover" id="reloadCover" aria-hidden="true">
@@ -742,9 +736,8 @@
     // brought back to the foreground — the key moment for home-screen apps.
     const updateToast = document.getElementById("updateToast");
     const reloadBtn = document.getElementById("reloadBtn");
-    const updateDismiss = document.getElementById("updateDismiss");
     const reloadCover = document.getElementById("reloadCover");
-    let runningVersion = null, pendingVersion = null, dismissedVersion = null, reloading = false;
+    let runningVersion = null, pendingVersion = null, reloading = false;
 
     async function fetchVersion() {
       try {
@@ -759,7 +752,7 @@
       const latest = await fetchVersion();
       if (!latest) return;                       // offline / unreachable: try again later
       if (!runningVersion) { runningVersion = latest; return; }  // adopt baseline
-      if (latest !== runningVersion && latest !== dismissedVersion) {
+      if (latest !== runningVersion) {
         pendingVersion = latest;
         updateToast.classList.add("show");
       }
@@ -785,7 +778,6 @@
     }
 
     reloadBtn.onclick = forceReload;
-    updateDismiss.onclick = () => { dismissedVersion = pendingVersion; updateToast.classList.remove("show"); };
 
     // Strip the cache-busting ?v= param after a forced reload (keeps the URL clean; hash routing is untouched).
     (function cleanUrl() {
