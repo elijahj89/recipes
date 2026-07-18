@@ -1,0 +1,28 @@
+[
+  {
+    "id": "classic-pancakes",
+    "title": "Classic Fluffy Pancakes",
+    "category": "Breakfast",
+    "servings": "4 (about 12 pancakes)",
+    "time": "25 min",
+    "author": "Family",
+    "description": "Light, fluffy pancakes that come together with pantry staples. A reliable weekend favorite.",
+    "ingredients": [
+      "1 1/2 cups all-purpose flour",
+      "3 1/2 tsp baking powder",
+      "1 tbsp sugar",
+      "1/4 tsp salt",
+      "1 1/4 cups milk",
+      "1 egg",
+      "3 tbsp butter, melted"
+    ],
+    "steps": [
+      "Whisk together flour, baking powder, sugar, and salt in a large bowl.",
+      "Make a well in the center and pour in the milk, egg, and melted butter. Mix until just combined — a few lumps are fine.",
+      "Heat a lightly oiled griddle or pan over medium-high heat.",
+      "Pour about 1/4 cup batter per pancake. Cook until bubbles form on top, then flip and cook until golden.",
+      "Serve warm with syrup, butter, or fresh fruit."
+    ],
+    "notes": "Don't overmix the batter — that's the secret to fluffy pancakes."
+  }
+]
