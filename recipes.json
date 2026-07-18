@@ -1,145 +1,34 @@
 [
   {
-    "id": "classic-pancakes",
-    "title": "Classic Fluffy Pancakes",
-    "category": "Breakfast",
-    "servings": "4 (about 12 pancakes)",
-    "time": "25 min",
-    "author": "Family",
-    "tags": ["quick", "vegetarian"],
-    "description": "Light, fluffy pancakes that come together with pantry staples. A reliable weekend favorite.",
-    "ingredients": [
-      "1 1/2 cups all-purpose flour",
-      "3 1/2 tsp baking powder",
-      "1 tbsp sugar",
-      "1/4 tsp salt",
-      "1 1/4 cups milk",
-      "1 egg",
-      "3 tbsp butter, melted"
-    ],
-    "steps": [
-      "Whisk together flour, baking powder, sugar, and salt in a large bowl.",
-      "Make a well in the center and pour in the milk, egg, and melted butter. Mix until just combined — a few lumps are fine.",
-      "Heat a lightly oiled griddle or pan over medium-high heat.",
-      "Pour about 1/4 cup batter per pancake. Cook until bubbles form on top, then flip and cook until golden.",
-      "Serve warm with syrup, butter, or fresh fruit."
-    ],
-    "notes": "Don't overmix the batter — that's the secret to fluffy pancakes."
-  },
-  {
-    "id": "lemon-garlic-roast-chicken",
-    "title": "Lemon Garlic Roast Chicken",
+    "id": "lemon-pepper-chicken",
+    "title": "Lemon Pepper Chicken",
     "category": "Dinner",
     "servings": "4",
-    "time": "1 hr 20 min",
+    "time": "30 min + marinate",
     "author": "Family",
-    "tags": ["chicken", "roast"],
-    "description": "A whole roast chicken with bright lemon and garlic, crispy skin, and juicy meat. Sunday-dinner classic.",
+    "tags": ["chicken", "griddle"],
+    "description": "Juicy, golden lemon pepper chicken with a bright crust — built for the flat-top.",
     "ingredients": [
-      "1 whole chicken (about 4 lb)",
-      "1 lemon, halved",
-      "6 cloves garlic, smashed",
-      "3 tbsp butter, softened",
-      "2 tbsp olive oil",
-      "1 tsp salt",
-      "1/2 tsp black pepper",
-      "A few sprigs fresh thyme or rosemary"
+      "2 lbs boneless skinless chicken thighs (or breasts)",
+      "2 lemons, juiced",
+      "1 tbsp lemon zest",
+      "3 tbsp olive oil",
+      "2 tsp coarsely ground black pepper",
+      "4 garlic cloves, minced",
+      "1 tsp kosher salt",
+      "1 tsp Dijon mustard",
+      "1 tsp honey",
+      "1 tsp fresh thyme leaves (optional)",
+      "1 tbsp avocado or canola oil (for cooking)"
     ],
     "steps": [
-      "Preheat oven to 425°F (220°C). Pat the chicken dry all over.",
-      "Rub the softened butter and olive oil over the skin. Season generously with salt and pepper.",
-      "Stuff the cavity with the lemon halves, smashed garlic, and herbs.",
-      "Place breast-side up in a roasting pan and roast for about 1 hour 15 minutes, until the juices run clear and a thermometer reads 165°F (74°C) in the thigh.",
-      "Let rest 10 minutes before carving."
+      "Whisk together 2 lemons, juiced, 1 tbsp lemon zest, 3 tbsp olive oil, 2 tsp coarsely ground black pepper, 4 garlic cloves, minced, 1 tsp kosher salt, 1 tsp Dijon mustard, 1 tsp honey, and 1 tsp fresh thyme leaves (optional) in a bowl until combined.",
+      "Add 2 lbs boneless skinless chicken thighs (or breasts) to a zip-lock bag or shallow dish. Pour marinade over the chicken and coat well. Refrigerate for at least 30 minutes — 2 to 4 hours is ideal. Don't exceed 8 hours or the acid will start breaking down the texture.",
+      "Remove chicken from the marinade and pat lightly dry with paper towels — this is key for getting a good sear. Discard the used marinade. Let the chicken rest at room temp for about 10 minutes while you heat the griddle.",
+      "Preheat your flat-top griddle to medium-high (around 400–425°F). Add 1 tbsp avocado or canola oil (for cooking) and spread it across the cooking surface. You want it shimmering but not smoking.",
+      "Lay chicken flat on the griddle — don't crowd it. For thighs: cook 5–6 minutes per side undisturbed until a deep golden crust forms. For breasts: cook 4–5 minutes per side, then press gently with a spatula to ensure even contact. Avoid moving the chicken around — let the crust develop.",
+      "Pull the chicken when it hits 160°F internal — it will carry over to 165°F while resting. Rest for 5 minutes before slicing. This keeps the juices locked in."
     ],
-    "notes": "Save the bones to make stock for the chicken noodle soup!"
-  },
-  {
-    "id": "chicken-noodle-soup",
-    "title": "Chicken Noodle Soup",
-    "category": "Dinner",
-    "servings": "6",
-    "time": "45 min",
-    "author": "Family",
-    "tags": ["chicken", "comfort", "one-pot"],
-    "description": "Cozy, brothy chicken noodle soup that cures whatever ails you.",
-    "ingredients": [
-      "1 tbsp olive oil",
-      "1 onion, diced",
-      "3 carrots, sliced",
-      "3 stalks celery, sliced",
-      "2 cloves garlic, minced",
-      "8 cups chicken broth",
-      "2 cups cooked chicken, shredded",
-      "2 cups egg noodles",
-      "1 tsp salt, plus more to taste",
-      "Fresh parsley, chopped"
-    ],
-    "steps": [
-      "Heat olive oil in a large pot over medium heat. Add onion, carrots, and celery and cook until softened, about 6 minutes.",
-      "Stir in the garlic and cook 1 minute until fragrant.",
-      "Pour in the chicken broth and bring to a boil.",
-      "Add the egg noodles and simmer until tender, about 8 minutes.",
-      "Stir in the shredded chicken, season with salt, and warm through. Finish with fresh parsley."
-    ],
-    "notes": "Cook the noodles separately if you're saving leftovers — they soak up broth as they sit."
-  },
-  {
-    "id": "weeknight-beef-chili",
-    "title": "Weeknight Beef Chili",
-    "category": "Dinner",
-    "servings": "6",
-    "time": "40 min",
-    "author": "Family",
-    "tags": ["beef", "one-pot"],
-    "description": "A hearty, mildly spiced beef chili that comes together fast on a busy night.",
-    "ingredients": [
-      "1 lb ground beef",
-      "1 onion, diced",
-      "2 cloves garlic, minced",
-      "2 tbsp chili powder",
-      "1 tsp cumin",
-      "1 can (28 oz) crushed tomatoes",
-      "1 can (15 oz) kidney beans, drained",
-      "1 cup beef broth",
-      "Salt and pepper to taste"
-    ],
-    "steps": [
-      "Brown the ground beef in a large pot over medium-high heat, breaking it up as it cooks. Drain excess fat.",
-      "Add the onion and garlic and cook until softened, about 5 minutes.",
-      "Stir in the chili powder and cumin and cook 1 minute.",
-      "Add the crushed tomatoes, beans, and broth. Bring to a simmer.",
-      "Simmer uncovered for 25 minutes, stirring occasionally. Season with salt and pepper."
-    ],
-    "notes": "Top with cheese, sour cream, or diced onion. Even better the next day."
-  },
-  {
-    "id": "garden-veggie-stir-fry",
-    "title": "Garden Veggie Stir-Fry",
-    "category": "Dinner",
-    "servings": "4",
-    "time": "20 min",
-    "author": "Family",
-    "tags": ["vegetarian", "quick"],
-    "description": "A quick, colorful vegetable stir-fry with a savory garlic-soy sauce. Serve over rice.",
-    "ingredients": [
-      "2 tbsp vegetable oil",
-      "2 cups broccoli florets",
-      "1 red bell pepper, sliced",
-      "1 cup snap peas",
-      "2 carrots, thinly sliced",
-      "2 cloves garlic, minced",
-      "3 tbsp soy sauce",
-      "1 tbsp honey",
-      "1 tsp sesame oil"
-    ],
-    "steps": [
-      "Whisk together the soy sauce, honey, and sesame oil; set aside.",
-      "Heat the vegetable oil in a large skillet or wok over high heat.",
-      "Add the carrots and broccoli and stir-fry 3 minutes.",
-      "Add the bell pepper, snap peas, and garlic and stir-fry 3 more minutes until crisp-tender.",
-      "Pour in the sauce and toss to coat for 1 minute. Serve over rice."
-    ],
-    "notes": "Add tofu or leftover chicken to make it a heartier meal."
+    "notes": "Thighs vs breasts: Thighs are more forgiving on a flat-top — more fat means more moisture and better crust. Breasts work great too but watch your temp closely. Don't skip the pat dry: moisture on the surface = steam, not sear. Paper towels make the difference between golden and grey. Honey watch: the honey in the marinade caramelizes fast — if you see it darkening too quickly, drop to medium heat. Batch cooking: this marinade scales easily, great for meal prepping. Slice leftovers for salads, wraps, or rice bowls."
   }
 ]
