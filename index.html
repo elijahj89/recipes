@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elijah's Kitchen</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍲</text></svg>" />
   <style>
     :root {
       --bg: #fdfbf7;
@@ -161,42 +162,57 @@
     }
     .empty { text-align: center; color: var(--muted); padding: 4rem 1rem; }
 
-    /* Detail overlay */
-    .overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      display: none; align-items: flex-start; justify-content: center;
-      padding: 2rem 1rem; overflow-y: auto; z-index: 10;
+    footer { text-align: center; color: var(--muted); padding: 2.5rem 1rem; font-size: 0.88rem; }
+
+    /* Full-page recipe view (slides in over the home screen) */
+    .recipe-screen {
+      position: fixed; inset: 0; z-index: 40;
+      background: var(--bg); overflow-y: auto;
+      transform: translateX(4%); opacity: 0; visibility: hidden;
+      transition: transform 0.34s cubic-bezier(0.32,0.72,0,1), opacity 0.28s ease, visibility 0.34s;
     }
-    .overlay.open { display: flex; }
-    .detail {
-      background: var(--bg); max-width: 720px; width: 100%; border-radius: 16px;
-      padding: 2.5rem; box-shadow: var(--shadow); position: relative;
+    .recipe-screen.open { transform: translateX(0); opacity: 1; visibility: visible; }
+    .topbar {
+      position: sticky; top: 0; z-index: 2;
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.9rem 1.5rem; border-bottom: 1px solid var(--border);
+      background: var(--bg);
     }
-    .close {
-      position: absolute; top: 1rem; right: 1.2rem; background: none; border: none;
-      font-size: 1.8rem; color: var(--muted); cursor: pointer; line-height: 1;
+    .back {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      background: var(--card); border: 1px solid var(--border); color: var(--text);
+      padding: 0.5rem 0.95rem; border-radius: 10px; cursor: pointer;
+      font-size: 0.95rem; font-weight: 600; transition: all 0.15s;
     }
-    .detail h2 { font-size: 2rem; margin: 0.8rem 0 0.5rem; letter-spacing: -0.02em; }
-    .detail .meta-row {
+    .back:hover { border-color: var(--accent); color: var(--accent); }
+    .back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .recipe-content { max-width: 720px; margin: 0 auto; padding: 2.25rem 1.5rem 4rem; }
+    .recipe-screen.open .recipe-content { animation: contentIn 0.42s cubic-bezier(0.32,0.72,0,1); }
+    @keyframes contentIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .recipe-content h2 { font-size: 2.1rem; margin: 0.8rem 0 0.5rem; letter-spacing: -0.02em; }
+    .recipe-content .meta-row {
       display: flex; flex-wrap: wrap; gap: 1.2rem; color: var(--muted);
       font-size: 0.92rem; margin-bottom: 1.2rem;
     }
-    .detail .description { font-size: 1.05rem; margin-bottom: 1.2rem; }
-    .detail h4 {
+    .recipe-content .description { font-size: 1.05rem; margin-bottom: 1.2rem; }
+    .recipe-content h4 {
       font-size: 1.1rem; margin: 1.8rem 0 0.8rem; padding-bottom: 0.4rem;
       border-bottom: 2px solid var(--accent-soft);
     }
-    .detail ul, .detail ol { padding-left: 1.4rem; }
-    .detail li { margin-bottom: 0.5rem; }
-    .detail .notes {
+    .recipe-content ul, .recipe-content ol { padding-left: 1.4rem; }
+    .recipe-content li { margin-bottom: 0.5rem; }
+    .recipe-content .notes {
       margin-top: 1.8rem; padding: 1rem 1.2rem; background: var(--accent-soft);
       border-radius: 10px; font-size: 0.95rem;
     }
-    footer { text-align: center; color: var(--muted); padding: 2.5rem 1rem; font-size: 0.88rem; }
+    @media (prefers-reduced-motion: reduce) {
+      .recipe-screen, .recipe-screen.open .recipe-content { transition: opacity 0.2s ease; animation: none; transform: none; }
+    }
     @media print {
-      header, .searchrow, .filters, .resultbar, footer, .close { display: none; }
-      .overlay { position: static; background: none; display: block; padding: 0; }
-      .detail { box-shadow: none; }
+      header, .searchrow, .filters, .resultbar, #results, footer, .topbar { display: none; }
+      .recipe-screen {
+        position: static; transform: none; opacity: 1; visibility: visible; overflow: visible;
+      }
     }
     @media (max-width: 560px) {
       .filter-label { min-width: 100%; margin-bottom: 0.1rem; }
@@ -238,8 +254,11 @@
 
   <footer>Made with love. To add a recipe, ask Claude Code to update <code>recipes.json</code>.</footer>
 
-  <div class="overlay" id="overlay">
-    <div class="detail" id="detail"></div>
+  <div class="recipe-screen" id="recipeScreen" aria-hidden="true">
+    <div class="topbar">
+      <button class="back" id="backBtn">← Back to recipes</button>
+    </div>
+    <div class="recipe-content" id="recipeContent"></div>
   </div>
 
   <script>
@@ -253,9 +272,11 @@
     const empty = document.getElementById("empty");
     const catGroup = document.getElementById("catGroup");
     const tagGroup = document.getElementById("tagGroup");
-    const overlay = document.getElementById("overlay");
-    const detail = document.getElementById("detail");
+    const recipeScreen = document.getElementById("recipeScreen");
+    const recipeContent = document.getElementById("recipeContent");
+    const backBtn = document.getElementById("backBtn");
     const searchEl = document.getElementById("search");
+    let navigatedInApp = false;
     const suggest = document.getElementById("suggest");
     const countEl = document.getElementById("count");
     let suggestIndex = -1;
@@ -284,6 +305,7 @@
         buildFilters();
         setView(view);
         render();
+        router();
       })
       .catch(() => { results.innerHTML = '<div class="empty">Could not load recipes.json.</div>'; });
 
@@ -400,7 +422,7 @@
       }).join("");
 
       results.querySelectorAll(".card").forEach(card => {
-        card.onclick = () => openDetail(recipes[card.dataset.i]);
+        card.onclick = () => openRecipe(recipes[card.dataset.i]);
       });
     }
 
@@ -435,7 +457,7 @@
 
       suggest.querySelectorAll(".suggest-item").forEach(el => {
         // mousedown (not click) so it fires before the input's blur/outside-click closes the panel
-        el.onmousedown = e => { e.preventDefault(); openDetail(recipes[el.dataset.i]); closeSuggest(); };
+        el.onmousedown = e => { e.preventDefault(); openRecipe(recipes[el.dataset.i]); };
       });
       openSuggest();
     }
@@ -460,9 +482,15 @@
       if (suggestIndex >= 0 && items[suggestIndex]) items[suggestIndex].scrollIntoView({ block: "nearest" });
     }
 
-    function openDetail(r) {
-      detail.innerHTML = `
-        <button class="close" aria-label="Close">×</button>
+    // ---- Recipe page navigation (hash-routed for real back-button + shareable links) ----
+    function openRecipe(r) {
+      navigatedInApp = true;
+      closeSuggest();
+      location.hash = "#/recipe/" + encodeURIComponent(r.id);
+    }
+
+    function renderRecipe(r) {
+      recipeContent.innerHTML = `
         ${r.category ? `<span class="cat">${esc(r.category)}</span>` : ""}
         <h2>${esc(r.title)}</h2>
         <div class="meta-row">
@@ -478,18 +506,48 @@
         <ol>${(r.steps || []).map(x => `<li>${esc(x)}</li>`).join("")}</ol>
         ${r.notes ? `<div class="notes">💡 ${esc(r.notes)}</div>` : ""}
       `;
-      detail.querySelector(".close").onclick = closeDetail;
-      overlay.classList.add("open");
-      document.body.style.overflow = "hidden";
     }
-    function closeDetail() { overlay.classList.remove("open"); document.body.style.overflow = ""; }
+
+    function showRecipe(r) {
+      document.title = r.title + " · Elijah's Kitchen";
+      renderRecipe(r);
+      recipeScreen.classList.add("open");
+      recipeScreen.setAttribute("aria-hidden", "false");
+      recipeScreen.scrollTop = 0;
+      document.body.style.overflow = "hidden";
+      backBtn.focus();
+    }
+
+    function showHome() {
+      document.title = "Elijah's Kitchen";
+      recipeScreen.classList.remove("open");
+      recipeScreen.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    function goBack() {
+      if (navigatedInApp && history.length > 1) history.back();
+      else location.hash = "#/";
+    }
+
+    function router() {
+      const m = location.hash.match(/^#\/recipe\/(.+)$/);
+      if (m) {
+        const r = recipes.find(x => x.id === decodeURIComponent(m[1]));
+        if (r) { showRecipe(r); return; }
+      }
+      showHome();
+    }
+    window.addEventListener("hashchange", router);
 
     clearBtn.onclick = () => {
       activeCat = "All"; activeTags.clear();
       syncChips(); render();
     };
-    overlay.onclick = e => { if (e.target === overlay) closeDetail(); };
-    document.addEventListener("keydown", e => { if (e.key === "Escape") closeDetail(); });
+    backBtn.onclick = goBack;
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && recipeScreen.classList.contains("open")) goBack();
+    });
 
     // Search box -> suggestion dropdown
     searchEl.oninput = e => { query = e.target.value; renderSuggestions(); };
@@ -509,8 +567,7 @@
       } else if (e.key === "Enter") {
         if (items.length) {
           const el = items[suggestIndex >= 0 ? suggestIndex : 0];
-          openDetail(recipes[el.dataset.i]);
-          closeSuggest();
+          openRecipe(recipes[el.dataset.i]);
         }
       } else if (e.key === "Escape") {
         closeSuggest();
