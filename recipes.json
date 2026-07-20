@@ -147,5 +147,35 @@
       "Assemble and finish: Preheat the oven to 450–500°F. Top each piece with sauce and mozzarella. Bake 5–7 minutes until bubbly and browned. Serve immediately."
     ],
     "notes": "The marinara makes a generous batch — great tossed with pasta and the reserved pasta water. Season the breadcrumb mix well with the paprika, garlic powder, onion powder, and oregano."
+  },
+  {
+    "id": "brown-butter-chocolate-chip-cookies",
+    "title": "Brown Butter Chocolate Chip Cookies",
+    "category": "Dessert",
+    "servings": "about 14 cookies",
+    "time": "1 hr 45 min (includes chilling)",
+    "author": "Family",
+    "tags": ["cookies", "vegetarian"],
+    "description": "Chewy, gooey chocolate chip cookies made with nutty brown butter and an extra egg yolk, finished with flaky sea salt.",
+    "ingredients": [
+      "3/4 cup (168g) unsalted butter",
+      "1 cup (212g) packed light brown sugar",
+      "1/4 cup (50g) granulated sugar",
+      "1 large egg plus 1 large egg yolk, at room temperature",
+      "1 tbsp pure vanilla extract",
+      "1 3/4 cups (220g) all-purpose flour",
+      "3/4 tsp baking soda",
+      "3/4 tsp kosher salt, plus flaky sea salt for sprinkling",
+      "1 1/4 cups (210g) semisweet or bittersweet chocolate chips (or roughly chopped chocolate)"
+    ],
+    "steps": [
+      "Brown the butter: Place the butter in a small saucepan over medium-low heat (low heat is key to even, golden browning). Stir and scrape the bottom and sides with a silicone spatula every 10–15 seconds. The butter will melt and foam, then the bubbles will get smaller and it will smell warm and nutty. Continue until it takes on color with small floating brown bits, about 5–7 minutes. Remove from the heat and let cool in the saucepan about 5 minutes — it should be quite warm but not scalding.",
+      "In a large bowl, combine the brown butter, brown sugar, and granulated sugar; mix with a silicone spatula. Add the egg, egg yolk, and vanilla and mix well.",
+      "Add the flour, baking soda, and salt and fold until no streaks of flour remain, being careful not to overmix. The dough should be soft but not sticky — it gives just a little when you touch it.",
+      "Fold in the chocolate chips until evenly distributed; do not overmix. Cover the bowl and chill in the fridge for at least 1 hour (and up to overnight).",
+      "Preheat the oven to 350°F and line two baking sheets with parchment paper. Remove the dough and let it soften at room temperature until scoopable, about 20 minutes. Use a 1 1/2 oz cookie scoop to portion equal amounts, spacing the dough 2 inches apart.",
+      "Bake until the cookies have puffed up and are light golden brown around the edges but still soft in the middle, 12–13 minutes. Sprinkle with flaky sea salt (if using) and let cool slightly on the baking sheet before serving."
+    ],
+    "notes": "For precise results, the browned butter should weigh 140g — if you have less, add milk until it reaches 140g. Browned butter evaporates at different rates, so add the flour in increments to avoid a dry dough. Ovens vary — pull the cookies right when they've puffed and just turned golden at the edges, still a little underdone in the center, for a gooey middle."
   }
 ]
